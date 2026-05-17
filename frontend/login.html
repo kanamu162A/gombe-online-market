@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>Gombe Online Market · Sign In</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/style/login.css">
+</head>
+<body>
+<div class="login-app">
+  <div class="brand-hero">
+    <div class="brand-icon"><i class="fas fa-store"></i></div>
+    <div class="brand-name">Gombe<span> Online</span> Market</div>
+    <div class="tagline">Buy & sell with confidence in Gombe</div>
+  </div>
+  <div class="form-card">
+    <!-- LOGIN PANEL -->
+    <div id="loginPanel" class="form-panel active">
+      <div class="panel-header">
+        <i class="fas fa-sign-in-alt"></i>
+        <h2>Welcome back</h2>
+        <p>Sign in to your account</p>
+      </div>
+      <div class="input-group">
+        <label><i class="fas fa-envelope"></i> Email address</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <label><i class="fas fa-lock"></i> Password</label>
+        <div class="pass-wrapper">
+          <input type="password" id="loginPassword" placeholder="Enter password">
+          <i class="far fa-eye-slash toggle-pass" data-target="loginPassword"></i>
+        </div>
+      </div>
+      <div class="forgot-link"><a href="#" id="forgotPasswordBtn">Forgot password?</a></div>
+      <button class="btn-primary" id="loginBtn">Sign in <i class="fas fa-arrow-right"></i></button>
+      <div class="signup-redirect">Don't have an account? <a href="register.html">Create account</a></div>
+      <div id="loginMessage" class="toast-msg"></div>
+    </div>
+
+    <!-- FORGOT PASSWORD – EMAIL -->
+    <div id="forgotPanel" class="form-panel">
+      <div class="panel-header">
+        <i class="fas fa-key"></i>
+        <h2>Reset password</h2>
+        <p>We'll send you a reset code</p>
+      </div>
+      <div class="input-group">
+        <label><i class="fas fa-envelope"></i> Email address</label>
+        <input type="email" id="resetEmail" placeholder="you@example.com">
+      </div>
+      <button class="btn-primary" id="sendResetOtpBtn">Send reset code</button>
+      <button class="btn-outline" id="backToLoginFromForgotBtn">← Back to sign in</button>
+      <div id="resetMessage" class="toast-msg"></div>
+    </div>
+
+    <!-- RESET OTP VERIFICATION -->
+    <div id="resetOtpPanel" class="form-panel">
+      <div class="panel-header">
+        <i class="fas fa-shield-alt"></i>
+        <h2>Enter reset code</h2>
+        <p>6‑digit code sent to your email</p>
+      </div>
+      <div class="otp-boxes" id="resetOtpBoxes">
+        <input type="text" maxlength="1" class="reset-otp-digit" data-index="0" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" class="reset-otp-digit" data-index="1" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" class="reset-otp-digit" data-index="2" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" class="reset-otp-digit" data-index="3" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" class="reset-otp-digit" data-index="4" inputmode="numeric" pattern="\d*">
+        <input type="text" maxlength="1" class="reset-otp-digit" data-index="5" inputmode="numeric" pattern="\d*">
+      </div>
+      <div class="otp-actions">
+        <button class="resend-link" id="resendResetOtpBtn">Resend code</button>
+        <span class="timer" id="resetTimer">⏱️ 01:00</span>
+      </div>
+      <button class="btn-primary" id="verifyResetOtpBtn">Verify code</button>
+      <button class="btn-outline" id="backToForgotFromResetBtn">← Back</button>
+      <div id="resetOtpMessage" class="toast-msg"></div>
+    </div>
+
+    <!-- SET NEW PASSWORD -->
+    <div id="newPasswordPanel" class="form-panel">
+      <div class="panel-header">
+        <i class="fas fa-lock"></i>
+        <h2>Create new password</h2>
+        <p>Must be at least 8 characters</p>
+      </div>
+      <div class="input-group">
+        <label><i class="fas fa-lock"></i> New password</label>
+        <div class="pass-wrapper">
+          <input type="password" id="newPass" placeholder="New password">
+          <i class="far fa-eye-slash toggle-pass" data-target="newPass"></i>
+        </div>
+      </div>
+      <div class="password-strength">
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+        <div class="strength-text" id="strengthText">Enter a password</div>
+      </div>
+      <div class="requirements" id="reqList">
+        <div class="req" id="lenReq"><span>🔘</span> 8+ characters</div>
+        <div class="req" id="upperReq"><span>🔘</span> Uppercase letter</div>
+        <div class="req" id="lowerReq"><span>🔘</span> Lowercase letter</div>
+        <div class="req" id="numReq"><span>🔘</span> Number</div>
+        <div class="req" id="specReq"><span>🔘</span> Special character</div>
+      </div>
+      <div class="input-group">
+        <label><i class="fas fa-check-circle"></i> Confirm password</label>
+        <div class="pass-wrapper">
+          <input type="password" id="confirmPass" placeholder="Confirm new password">
+          <i class="far fa-eye-slash toggle-pass" data-target="confirmPass"></i>
+        </div>
+      </div>
+      <button class="btn-primary" id="resetPasswordBtn">Reset password</button>
+      <button class="btn-outline" id="backToLoginFromNewBtn">← Back to sign in</button>
+      <div id="newPassMessage" class="toast-msg"></div>
+    </div>
+  </div>
+</div>
+<script src="js/login.js"></script>
+</body>
+</html>

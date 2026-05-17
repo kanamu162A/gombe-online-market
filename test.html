@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Gombe Online Market · Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Keep all your existing styles – they are fine */
+        :root {
+            --primary: #f97316;
+            --primary-hover: #ea580c;
+            --primary-light: #fff7ed;
+            --primary-soft: #ffedd5;
+            --dark: #0f172a;
+            --dark-2: #1e293b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --white: #ffffff;
+            --green: #10b981;
+            --green-bg: #ecfdf5;
+            --red: #ef4444;
+            --red-bg: #fef2f2;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --purple: #8b5cf6;
+            --purple-bg: #f5f3ff;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.05);
+            --radius-sm: 10px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        body { font-family:'Inter',system-ui; background:#f1f5f9; color:#0f172a; line-height:1.5; }
+        .announcement-bar {
+            background: linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+            color:#fff; padding:10px 20px; display:flex; align-items:center; justify-content:center;
+            gap:10px; flex-wrap:wrap; border-bottom:3px solid var(--primary);
+            font-weight:500; font-size:0.875rem; position:sticky; top:0; z-index:999;
+        }
+        .announcement-bar i { font-size:1.1rem; color:var(--primary); animation:pulse-icon 2s infinite; }
+        @keyframes pulse-icon { 0%,100%{transform:scale(1);} 50%{transform:scale(1.25);} }
+        .announcement-close { background:rgba(255,255,255,0.1); border:none; color:#94a3b8; cursor:pointer; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+        .dashboard { display:flex; min-height:calc(100vh - 48px); }
+        .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:998; }
+        .sidebar-overlay.show { display:block; }
+        .sidebar { width:270px; background:linear-gradient(180deg,#0f172a 0%,#1e293b 100%); color:#fff; position:fixed; top:0; left:0; bottom:0; transform:translateX(-100%); transition:transform 0.3s; z-index:1000; overflow-y:auto; display:flex; flex-direction:column; border-right:1px solid rgba(255,255,255,0.05); }
+        .sidebar.open { transform:translateX(0); }
+        .sidebar-logo-area { padding:1.5rem 1.3rem; text-align:center; border-bottom:1px solid rgba(255,255,255,0.08); }
+        .sidebar-logo { font-size:1.3rem; font-weight:900; display:inline-flex; gap:0.15rem; }
+        .logo-g { color:var(--primary); } .logo-o { color:#fff; opacity:0.85; } .logo-m { color:var(--primary); }
+        .sidebar-user-area { padding:1.3rem; text-align:center; border-bottom:1px solid rgba(255,255,255,0.08); }
+        .sidebar-avatar { width:60px; height:60px; background:linear-gradient(135deg,var(--primary),#ea580c); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 0.7rem; font-size:1.5rem; font-weight:700; box-shadow:0 4px 15px rgba(249,115,22,0.35); border:3px solid rgba(255,255,255,0.15); }
+        .sidebar-username { font-weight:700; font-size:1rem; }
+        .sidebar-role { font-size:0.75rem; color:#94a3b8; margin-top:2px; }
+        .sidebar-nav { flex:1; padding:0.8rem 0.6rem; display:flex; flex-direction:column; gap:2px; }
+        .nav-link { display:flex; align-items:center; gap:0.75rem; padding:0.7rem 1rem; color:#cbd5e1; cursor:pointer; border-radius:10px; font-weight:500; font-size:0.9rem; background:none; border:none; width:100%; text-align:left; }
+        .nav-link:hover { background:rgba(255,255,255,0.05); color:#fff; }
+        .nav-link.active { background:linear-gradient(90deg,rgba(249,115,22,0.2),transparent); color:#fff; font-weight:600; box-shadow:inset 3px 0 0 var(--primary); }
+        .nav-link i { width:20px; text-align:center; }
+        .nav-link .badge { margin-left:auto; background:var(--primary); color:#fff; font-size:0.7rem; padding:2px 8px; border-radius:20px; font-weight:600; }
+        .sidebar-footer { padding:1rem; border-top:1px solid rgba(255,255,255,0.08); }
+        .logout-sidebar { display:flex; align-items:center; gap:0.75rem; padding:0.7rem 1rem; color:#f87171; cursor:pointer; border-radius:10px; font-weight:500; background:none; border:none; width:100%; text-align:left; }
+        .logout-sidebar:hover { background:rgba(239,68,68,0.1); }
+        .main-content { flex:1; margin-left:0; padding:1.3rem; transition:margin 0.3s; max-width:100%; overflow-x:hidden; }
+        .top-bar { background:var(--white); border-radius:var(--radius-lg); padding:0.9rem 1.3rem; margin-bottom:1.3rem; display:flex; justify-content:space-between; align-items:center; box-shadow:var(--shadow); gap:0.8rem; flex-wrap:wrap; }
+        .top-bar-left { display:flex; align-items:center; gap:0.8rem; }
+        .menu-btn { font-size:1.4rem; cursor:pointer; color:var(--gray-600); background:none; border:none; padding:6px; border-radius:8px; }
+        .menu-btn:hover { background:var(--gray-100); }
+        .page-title-area h1 { font-size:1.25rem; font-weight:700; }
+        .page-title-area .breadcrumb { font-size:0.78rem; color:var(--gray-500); }
+        .top-bar-right { display:flex; align-items:center; gap:0.7rem; }
+        .btn-icon { width:38px; height:38px; border-radius:50%; border:1px solid var(--gray-200); background:var(--white); cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--gray-600); position:relative; }
+        .btn-icon .dot { position:absolute; top:6px; right:6px; width:8px; height:8px; background:var(--red); border-radius:50%; border:2px solid #fff; }
+        .btn-logout { background:#fef2f2; color:#ef4444; border:1px solid #fecaca; padding:0.45rem 1rem; border-radius:30px; cursor:pointer; font-weight:600; font-size:0.85rem; display:flex; align-items:center; gap:0.4rem; }
+        .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-bottom:1.3rem; }
+        .stat-card { background:var(--white); border-radius:var(--radius-lg); padding:1.2rem 1.1rem; box-shadow:var(--shadow); display:flex; align-items:center; gap:1rem; border:1px solid transparent; }
+        .stat-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+        .stat-icon.orange { background:var(--primary-soft); color:var(--primary); }
+        .stat-value { font-size:1.6rem; font-weight:800; line-height:1; }
+        .stat-label { font-size:0.8rem; color:var(--gray-500); font-weight:500; margin-top:3px; }
+        .wallet-card { background:linear-gradient(135deg,#f97316 0%,#ea580c 40%,#c2410c 100%); color:#fff; border-radius:var(--radius-xl); padding:1.5rem 1.6rem; margin-bottom:1.3rem; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; box-shadow:0 8px 30px rgba(249,115,22,0.3); position:relative; overflow:hidden; }
+        .wallet-balance { font-size:2.2rem; font-weight:900; margin:0.3rem 0; position:relative; z-index:1; }
+        .wallet-account { background:rgba(255,255,255,0.18); padding:0.5rem 1rem; border-radius:40px; display:inline-flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.85rem; font-weight:500; backdrop-filter:blur(4px); }
+        .section-card { background:var(--white); border-radius:var(--radius-lg); padding:1.3rem; margin-bottom:1.3rem; box-shadow:var(--shadow); border:1px solid var(--gray-100); }
+        .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.6rem; }
+        .link-btn { color:var(--primary); font-weight:600; font-size:0.85rem; cursor:pointer; background:none; border:none; }
+        .filter-pills { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:1rem; }
+        .filter-pill { background:var(--gray-100); border:1px solid transparent; padding:0.4rem 1rem; border-radius:30px; cursor:pointer; font-size:0.82rem; font-weight:500; color:var(--gray-600); white-space:nowrap; }
+        .filter-pill.active { background:var(--primary); color:#fff; border-color:var(--primary); font-weight:600; box-shadow:0 2px 8px rgba(249,115,22,0.25); }
+        .list-item { background:var(--gray-50); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:0.55rem; border:1px solid var(--gray-100); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem; transition:var(--transition); }
+        .list-item:hover { background:#fff; box-shadow:var(--shadow-sm); border-color:var(--gray-200); }
+        .list-item-left { display:flex; align-items:center; gap:0.7rem; flex:1; min-width:180px; }
+        .list-item-thumb { width:44px; height:44px; border-radius:10px; background:var(--gray-200); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--gray-400); font-size:1.2rem; overflow:hidden; }
+        .list-item-info strong { font-weight:600; font-size:0.9rem; display:block; }
+        .list-item-info small { color:var(--gray-500); font-size:0.78rem; }
+        .status-badge { padding:3px 10px; border-radius:20px; font-size:0.73rem; font-weight:600; white-space:nowrap; }
+        .status-pending { background:#fef3c7; color:#b45309; }
+        .status-completed { background:#d1fae5; color:#065f46; }
+        .list-item-actions { display:flex; gap:0.4rem; }
+        .action-btn { width:34px; height:34px; border-radius:50%; border:1px solid var(--gray-200); background:#fff; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; color:var(--gray-600); }
+        .action-btn.edit:hover { color:var(--blue); border-color:var(--blue); }
+        .action-btn.delete:hover { color:var(--red); border-color:var(--red); }
+        .amount-credit { color:#10b981; font-weight:700; }
+        .form-group { margin-bottom:0.8rem; }
+        .form-group label { font-weight:600; font-size:0.82rem; display:block; margin-bottom:0.35rem; color:var(--gray-700); }
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding:0.7rem 0.9rem; border:1.5px solid var(--gray-200); border-radius:12px; background:#fafbfc; font-family:inherit; font-size:0.9rem; transition:var(--transition); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(249,115,22,0.08); background:#fff; }
+        .btn-primary { background:var(--primary); color:#fff; border:none; padding:0.75rem 1.5rem; border-radius:30px; font-weight:700; cursor:pointer; font-size:0.9rem; display:inline-flex; align-items:center; gap:0.4rem; box-shadow:0 4px 14px rgba(249,115,22,0.3); }
+        .btn-primary:hover { background:var(--primary-hover); transform:translateY(-1px); }
+        .image-upload-area { border:2px dashed var(--gray-300); border-radius:var(--radius); padding:1.5rem; text-align:center; cursor:pointer; transition:var(--transition); background:#fafbfc; }
+        .image-upload-area:hover { border-color:var(--primary); background:var(--primary-light); }
+        .image-upload-area i { font-size:2rem; color:var(--gray-400); display:block; margin-bottom:0.5rem; }
+        .image-preview-container { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.5rem; }
+        .image-preview-thumb { width:70px; height:70px; border-radius:10px; object-fit:cover; border:2px solid var(--gray-200); }
+        .empty-state { text-align:center; padding:2rem; color:var(--gray-400); }
+        .empty-state i { font-size:2.5rem; display:block; margin-bottom:0.5rem; }
+        .toast-container { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:2000; display:flex; flex-direction:column; gap:6px; pointer-events:none; }
+        .toast { background:#1e293b; color:#fff; padding:0.65rem 1.3rem; border-radius:30px; font-size:0.83rem; font-weight:500; opacity:0; transform:translateY(10px); transition:all 0.3s ease; pointer-events:auto; box-shadow:var(--shadow-lg); }
+        .toast.show { opacity:1; transform:translateY(0); }
+        .toast.error { background:#ef4444; }
+        .toast.success { background:#10b981; }
+        .page { display:none; animation:fadeSlideIn 0.3s ease; }
+        .page.active { display:block; }
+        @keyframes fadeSlideIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:1500; align-items:center; justify-content:center; padding:1rem; }
+        .modal-overlay.show { display:flex; }
+        .modal { background:#fff; border-radius:var(--radius-xl); padding:1.5rem; width:100%; max-width:500px; max-height:85vh; overflow-y:auto; }
+        @media (min-width:768px) {
+            .sidebar { transform:translateX(0); position:sticky; height:100vh; }
+            .sidebar-overlay { display:none !important; }
+            .main-content { margin-left:0; max-width:calc(100vw - 270px); }
+            .menu-btn { display:none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="announcementBar" class="announcement-bar" style="display:none;">
+        <i class="fas fa-bullhorn"></i>
+        <span class="announcement-text" id="announcementText">Loading...</span>
+        <button class="announcement-close" onclick="dismissAnnouncement()">✕</button>
+    </div>
+
+    <div class="dashboard">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo-area">
+                <div class="sidebar-logo"><span class="logo-g">GOMBE</span><span class="logo-o">ONLINE</span><span class="logo-m">MARKET</span></div>
+            </div>
+            <div class="sidebar-user-area">
+                <div class="sidebar-avatar" id="userAvatarLarge">U</div>
+                <div class="sidebar-username" id="sidebarUserName">User</div>
+                <div class="sidebar-role">Seller</div>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-link active" data-page="sell"><i class="fas fa-store"></i> Sell Products</button>
+                <button class="nav-link" data-page="my-products"><i class="fas fa-list-ul"></i> My Listings</button>
+                <button class="nav-link" data-page="overview"><i class="fas fa-chart-line"></i> Dashboard</button>
+                <button class="nav-link" data-page="settings"><i class="fas fa-gear"></i> Settings</button>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="logout-sidebar" id="logoutSidebarBtn"><i class="fas fa-right-from-bracket"></i> Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+                    <div class="page-title-area"><h1 id="pageTitle">Sell Products</h1><span class="breadcrumb" id="breadcrumb">Post new product</span></div>
+                </div>
+                <div class="top-bar-right">
+                    <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Exit</button>
+                </div>
+            </div>
+
+            <!-- Sell Page (upload form) -->
+            <div id="sellPage" class="page active">
+                <div class="section-card">
+                    <div class="section-header"><h3>📸 Post New Product</h3></div>
+                    <form id="productForm" enctype="multipart/form-data">
+                        <div class="form-group"><label>Product Name *</label><input type="text" id="productName" placeholder="e.g., iPhone 15 Pro Max" required></div>
+                        <div class="form-group"><label>Price (₦) *</label><input type="number" id="productPrice" placeholder="e.g., 250000" required></div>
+                        <div class="form-group"><label>Stock</label><input type="number" id="productStock" value="1" min="1"></div>
+                        <div class="form-group"><label>Category</label><input type="text" id="productCategory" placeholder="Phones, Electronics..." value="General"></div>
+                        <div class="form-group"><label>Description</label><textarea id="productDesc" rows="2" placeholder="Describe your product..."></textarea></div>
+                        <div class="form-group">
+                            <label>Product Image</label>
+                            <div class="image-upload-area" id="imageUploadArea" onclick="document.getElementById('productImageFile').click()">
+                                <i class="fas fa-cloud-arrow-up"></i>
+                                <p>Click to upload product image</p>
+                                <small style="color:#94a3b8;">JPG, PNG, WebP accepted</small>
+                            </div>
+                            <input type="file" id="productImageFile" accept="image/*" style="display:none;">
+                            <div class="image-preview-container" id="imagePreview"></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Post Advertisement</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- My Products Listings Page -->
+            <div id="myProductsPage" class="page">
+                <div class="section-card">
+                    <div class="section-header"><h3>📋 My Listings</h3></div>
+                    <div id="myProductsList"></div>
+                </div>
+            </div>
+
+            <!-- Overview Page (stubbed stats) -->
+            <div id="overviewPage" class="page">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon orange"><i class="fas fa-shopping-cart"></i></div><div><div class="stat-value" id="totalProducts">0</div><div class="stat-label">Total Products</div></div></div>
+                    <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-naira-sign"></i></div><div><div class="stat-value" id="totalValue">₦0</div><div class="stat-label">Total Value</div></div></div>
+                </div>
+                <div class="section-card"><h3>Recent Activity</h3><div id="recentProductsList"></div></div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page">
+                <div class="section-card">
+                    <div class="section-header"><h3>⚙️ Profile Settings</h3></div>
+                    <form id="settingsForm">
+                        <div class="form-group"><label>Display Name *</label><input type="text" id="settingsName" required></div>
+                        <div class="form-group"><label>Phone Number</label><input type="tel" id="settingsPhone" placeholder="+234..."></div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal-overlay" id="editModalOverlay">
+        <div class="modal">
+            <h3>✏️ Edit Product</h3>
+            <form id="editProductForm" enctype="multipart/form-data">
+                <input type="hidden" id="editProductId">
+                <div class="form-group"><label>Product Name</label><input type="text" id="editProductName" required></div>
+                <div class="form-group"><label>Price (₦)</label><input type="number" id="editProductPrice" required></div>
+                <div class="form-group"><label>Stock</label><input type="number" id="editProductStock" min="1"></div>
+                <div class="form-group"><label>Category</label><input type="text" id="editProductCategory"></div>
+                <div class="form-group"><label>Description</label><textarea id="editProductDesc" rows="2"></textarea></div>
+                <div class="form-group"><label>Update Image (optional)</label><input type="file" id="editProductImageFile" accept="image/*"></div>
+                <div class="image-preview-container" id="editImagePreview"></div>
+                <div style="display:flex; gap:0.6rem; justify-content:flex-end; margin-top:1rem;">
+                    <button type="button" class="btn-logout" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Update Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const BASE_URL = 'http://localhost:4040';
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = 'login.html';
+
+        // Helper: show toast notification
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = msg;
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 350);
+            }, 3000);
+        }
+
+        function formatCurrency(amt) {
+            return '₦' + Number(amt).toLocaleString('en-NG', { minimumFractionDigits: 2 });
+        }
+
+        // Helper to get image URL from API response (object or string)
+        function getImageUrl(product) {
+            if (!product.images || product.images.length === 0) return null;
+            const first = product.images[0];
+            return typeof first === 'string' ? first : (first?.url || null);
+        }
+
+        // Generic API caller with token
+        async function apiCall(endpoint, options = {}) {
+            const url = `${BASE_URL}${endpoint}`;
+            const headers = { 'Authorization': `Bearer ${token}` };
+            if (!(options.body instanceof FormData)) {
+                headers['Content-Type'] = 'application/json';
+            }
+            const res = await fetch(url, { ...options, headers });
+            if (!res.ok) {
+                let message = `HTTP ${res.status}`;
+                try {
+                    const errData = await res.json();
+                    message = errData.message || message;
+                } catch(e) {}
+                throw new Error(message);
+            }
+            return res.json();
+        }
+
+        // ---------- PRODUCT UPLOAD (multipart/form-data) ----------
+        const productForm = document.getElementById('productForm');
+        const imageFileInput = document.getElementById('productImageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const uploadArea = document.getElementById('imageUploadArea');
+
+        imageFileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    imagePreview.innerHTML = `<img src="${ev.target.result}" class="image-preview-thumb" style="width:100px;height:100px;" alt="Preview">`;
+                    uploadArea.style.borderColor = '#10b981';
+                    uploadArea.querySelector('i').style.color = '#10b981';
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            } else {
+                imagePreview.innerHTML = '';
+                uploadArea.style.borderColor = '#cbd5e1';
+                uploadArea.querySelector('i').style.color = '#94a3b8';
+            }
+        });
+
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('name', document.getElementById('productName').value.trim());
+            formData.append('price', parseFloat(document.getElementById('productPrice').value));
+            formData.append('stock', parseInt(document.getElementById('productStock').value) || 1);
+            formData.append('category', document.getElementById('productCategory').value.trim() || 'General');
+            formData.append('description', document.getElementById('productDesc').value.trim());
+            const imageFile = document.getElementById('productImageFile').files[0];
+            if (imageFile) formData.append('images', imageFile);
+            else { showToast('Please select an image', 'error'); return; }
+
+            try {
+                await apiCall('/api/products', { method: 'POST', body: formData });
+                showToast('✅ Product posted successfully!', 'success');
+                productForm.reset();
+                imagePreview.innerHTML = '';
+                uploadArea.style.borderColor = '#cbd5e1';
+                uploadArea.querySelector('i').style.color = '#94a3b8';
+                // Refresh my products and overview
+                loadMyProducts();
+                loadOverviewStats();
+                switchPage('my-products');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        // ---------- MY PRODUCTS (GET /api/products/my) ----------
+        let productsMap = new Map();
+        async function loadMyProducts() {
+            try {
+                const data = await apiCall('/api/products/my');
+                const listDiv = document.getElementById('myProductsList');
+                if (!data.data || data.data.length === 0) {
+                    listDiv.innerHTML = '<div class="empty-state"><i class="fas fa-store-slash"></i><p>No products listed yet. Go to "Sell Products" to add.</p></div>';
+                    productsMap.clear();
+                    return;
+                }
+                productsMap = new Map(data.data.map(p => [p.id, p]));
+                listDiv.innerHTML = data.data.map(p => {
+                    const imgUrl = getImageUrl(p);
+                    return `
+                    <div class="list-item" data-product-id="${p.id}">
+                        <div class="list-item-left">
+                            <div class="list-item-thumb">
+                                ${imgUrl ? `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" alt="${escapeHtml(p.name)}">` : '<i class="fas fa-box"></i>'}
+                            </div>
+                            <div class="list-item-info">
+                                <strong>${escapeHtml(p.name)}</strong>
+                                <small>${escapeHtml(p.category || 'General')} · Stock: ${p.stock || 1}</small>
+                            </div>
+                        </div>
+                        <strong style="color:var(--primary);">${formatCurrency(p.price)}</strong>
+                        <div class="list-item-actions">
+                            <button class="action-btn edit edit-product-btn" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="action-btn delete delete-product-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                listDiv.onclick = (e) => {
+                    const editBtn = e.target.closest('.edit-product-btn');
+                    const deleteBtn = e.target.closest('.delete-product-btn');
+                    const item = e.target.closest('.list-item');
+                    if (!item) return;
+                    const id = item.dataset.productId;
+                    if (editBtn) openEditModal(id);
+                    if (deleteBtn) deleteProduct(id);
+                };
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        function escapeHtml(text) { 
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(text));
+            return div.innerHTML;
+        }
+
+        // Edit product modal
+        function openEditModal(id) {
+            const product = productsMap.get(id);
+            if (!product) return;
+            document.getElementById('editProductId').value = product.id;
+            document.getElementById('editProductName').value = product.name;
+            document.getElementById('editProductPrice').value = product.price;
+            document.getElementById('editProductStock').value = product.stock || 1;
+            document.getElementById('editProductCategory').value = product.category || 'General';
+            document.getElementById('editProductDesc').value = product.description || '';
+            const currentImgUrl = getImageUrl(product);
+            document.getElementById('editImagePreview').innerHTML = currentImgUrl ? `<img src="${currentImgUrl}" class="image-preview-thumb" style="width:100px;height:100px;" alt="Current">` : '';
+            document.getElementById('editProductImageFile').value = '';
+            document.getElementById('editModalOverlay').classList.add('show');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModalOverlay').classList.remove('show');
+        }
+        document.getElementById('editModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeEditModal(); });
+
+        document.getElementById('editProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editProductId').value;
+            const formData = new FormData();
+            formData.append('name', document.getElementById('editProductName').value.trim());
+            formData.append('price', parseFloat(document.getElementById('editProductPrice').value));
+            formData.append('stock', parseInt(document.getElementById('editProductStock').value) || 1);
+            formData.append('category', document.getElementById('editProductCategory').value.trim());
+            formData.append('description', document.getElementById('editProductDesc').value.trim());
+            const newImage = document.getElementById('editProductImageFile').files[0];
+            if (newImage) {
+                formData.append('replaceImages', 'true');   // replace existing image
+                formData.append('images', newImage);
+            }
+            try {
+                await apiCall(`/api/products/${id}`, { method: 'PUT', body: formData });
+                showToast('✅ Product updated!', 'success');
+                closeEditModal();
+                loadMyProducts();
+                loadOverviewStats();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        async function deleteProduct(id) {
+            if (!confirm('Delete this product permanently?')) return;
+            try {
+                await apiCall(`/api/products/${id}`, { method: 'DELETE' });
+                showToast('🗑️ Product deleted', 'success');
+                loadMyProducts();
+                loadOverviewStats();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        // ---------- Overview stats (derived from my products) ----------
+        async function loadOverviewStats() {
+            try {
+                const data = await apiCall('/api/products/my');
+                const products = data.data || [];
+                const totalProducts = products.length;
+                const totalValue = products.reduce((sum, p) => sum + (p.price * (p.stock || 1)), 0);
+                document.getElementById('totalProducts').innerText = totalProducts;
+                document.getElementById('totalValue').innerHTML = formatCurrency(totalValue);
+                const recentDiv = document.getElementById('recentProductsList');
+                if (products.length === 0) {
+                    recentDiv.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No products yet</p></div>';
+                } else {
+                    recentDiv.innerHTML = products.slice(0,3).map(p => {
+                        const imgUrl = getImageUrl(p);
+                        return `
+                        <div class="list-item">
+                            <div class="list-item-left">
+                                <div class="list-item-thumb">${imgUrl ? `<img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : '<i class="fas fa-box"></i>'}</div>
+                                <div class="list-item-info"><strong>${escapeHtml(p.name)}</strong><small>${formatCurrency(p.price)}</small></div>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // ---------- Profile settings ----------
+        async function loadProfile() {
+            try {
+                // Fetch user info from your backend – if you have a /api/user/profile endpoint, use it.
+                // For now we mock using localStorage or a placeholder.
+                const userData = JSON.parse(localStorage.getItem('user') || '{}');
+                document.getElementById('settingsName').value = userData.name || '';
+                document.getElementById('settingsPhone').value = userData.phone || '';
+            } catch (e) {}
+        }
+
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const profile = {
+                name: document.getElementById('settingsName').value.trim(),
+                phone: document.getElementById('settingsPhone').value.trim()
+            };
+            // Save to localStorage for demo; you can implement a real endpoint later.
+            localStorage.setItem('user', JSON.stringify(profile));
+            document.getElementById('sidebarUserName').innerText = profile.name || 'User';
+            document.getElementById('userAvatarLarge').innerText = (profile.name || 'U').charAt(0).toUpperCase();
+            showToast('✅ Profile updated (local)', 'success');
+        });
+
+        // ---------- Page switching and initial load ----------
+        const pageTitles = { sell:'Sell Products', 'my-products':'My Listings', overview:'Dashboard', settings:'Profile Settings' };
+        const breadcrumbs = { sell:'Post new product', 'my-products':'Manage your products', overview:'Stats & recent items', settings:'Account' };
+
+        function switchPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(`${page}Page`).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
+            document.getElementById('pageTitle').innerText = pageTitles[page] || page;
+            document.getElementById('breadcrumb').innerText = breadcrumbs[page] || '';
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+            if (page === 'my-products') loadMyProducts();
+            if (page === 'overview') loadOverviewStats();
+            if (page === 'settings') loadProfile();
+        }
+        window.switchPage = switchPage;
+
+        document.querySelectorAll('.nav-link').forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.page)));
+
+        // Sidebar menu toggle
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('show');
+        });
+        document.getElementById('sidebarOverlay').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show');
+        });
+
+        function handleLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        document.getElementById('logoutSidebarBtn').addEventListener('click', handleLogout);
+
+        // Load initial data
+        loadMyProducts();
+        loadOverviewStats();
+
+        // Optional: show a welcome toast
+        showToast('Welcome to the Seller Dashboard!', 'success');
+    </script>
+</body>
+</html>

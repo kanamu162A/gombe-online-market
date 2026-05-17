@@ -1,0 +1,117 @@
+[
+  {
+    "id": "1778622979253",
+    "seller_id": 6,
+    "name": "iPhone 15 Pro Max",
+    "price": 1250000,
+    "stock": 0,
+    "category": "Electronics",
+    "description": "Brand new, sealed box, 256GB",
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dsw6mdwpw/image/upload/v1778932465/products/6/product_1778932443193_0_tieqyp.png",
+        "public_id": "products/6/product_1778932443193_0_tieqyp"
+      }
+    ],
+    "created_at": "2026-05-12T21:56:19.253Z",
+    "updated_at": "2026-05-16T12:06:47.380Z"
+  },
+  {
+    "id": "1778623138062",
+    "seller_id": 6,
+    "name": "iPhone 15 Pro Max",
+    "price": 1250000,
+    "stock": 1,
+    "category": "Electronics",
+    "description": "Brand new, sealed box, 256GB",
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dsw6mdwpw/image/upload/v1778935669/products/6/product_1778935666019_0_9ogr1f.jpg",
+        "public_id": "products/6/product_1778935666019_0_9ogr1f"
+      }
+    ],
+    "created_at": "2026-05-12T21:58:58.062Z",
+    "updated_at": "2026-05-16T12:47:50.938Z"
+  },
+  {
+    "id": "1778663596853",
+    "seller_id": 6,
+    "name": "iPhone 15 Pro Max",
+    "price": 1250000,
+    "stock": 1,
+    "category": "Electronics",
+    "description": "Brand new, sealed box, 256GB",
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dsw6mdwpw/image/upload/v1778663596/products/6/product_1778663589266_0.png",
+        "public_id": "products/6/product_1778663589266_0"
+      }
+    ],
+    "created_at": "2026-05-13T09:13:16.853Z"
+  },
+  {
+    "id": "1778663625641",
+    "seller_id": 6,
+    "name": "Sinasir",
+    "price": 34567,
+    "stock": 1,
+    "category": "General",
+    "description": "mhgcvhghcvgjnfxvb",
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dsw6mdwpw/image/upload/v1778663625/products/6/product_1778663622808_0.jpg",
+        "public_id": "products/6/product_1778663622808_0"
+      }
+    ],
+    "created_at": "2026-05-13T09:13:45.641Z"
+  },
+  {
+    "id": "1778666705960",
+    "seller_id": 6,
+    "name": "Sinasir",
+    "price": 345,
+    "stock": 1,
+    "category": "General",
+    "description": "lkdhfgl",
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dsw6mdwpw/image/upload/v1778666706/products/6/product_1778666702129_0.jpg",
+        "public_id": "products/6/product_1778666702129_0"
+      }
+    ],
+    "created_at": "2026-05-13T10:05:05.960Z"
+  },
+  {
+    "id": "1778680086806",
+    "seller_id": "7",
+    "name": "mtn-router",
+    "price": 20000,
+    "stock": 1,
+    "category": "General",
+    "description": "manneeru",
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dsw6mdwpw/image/upload/v1778680086/products/7/product_1778680046300_0.png",
+        "public_id": "products/7/product_1778680046300_0"
+      }
+    ],
+    "created_at": "2026-05-13T13:48:06.806Z"
+  },
+  {
+    "id": "1778783362437",
+    "seller_id": "7",
+    "name": "mtn-router",
+    "price": 1200,
+    "stock": 1,
+    "category": "General",
+    "description": "manneeru",
+    "images": [
+      {
+        "url": "https://res.cloudinary.com/dsw6mdwpw/image/upload/v1778783362/products/7/product_1778783355906_0_nps6j8.jpg",
+        "public_id": "products/7/product_1778783355906_0_nps6j8"
+      }
+    ],
+    "created_at": "2026-05-14T18:29:22.437Z",
+    "updated_at": "2026-05-14T18:29:22.437Z"
+  }
+]

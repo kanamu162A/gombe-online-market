@@ -1,0 +1,310 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #f1f5f9;
+  color: #0f172a;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-app {
+  width: 100%;
+  max-width: 440px;
+}
+
+.brand-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.brand-icon {
+  font-size: 3rem;
+  color: #f97316;
+  margin-bottom: 0.5rem;
+}
+
+.brand-name {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.brand-name span {
+  color: #f97316;
+}
+
+.tagline {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.form-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.form-panel {
+  display: none;
+}
+
+.form-panel.active {
+  display: block;
+}
+
+.panel-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.panel-header i {
+  font-size: 2.2rem;
+  color: #f97316;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.panel-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.panel-header p {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.input-group label i {
+  width: 20px;
+  color: #f97316;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: 0.2s;
+  background: #fafbfc;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.08);
+  background: #fff;
+}
+
+.pass-wrapper {
+  position: relative;
+}
+
+.pass-wrapper input {
+  padding-right: 2.8rem;
+}
+
+.pass-wrapper .toggle-pass {
+  position: absolute;
+  right: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.forgot-link {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.forgot-link a {
+  color: #f97316;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary {
+  width: 100%;
+  background: #f97316;
+  color: #fff;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
+}
+
+.btn-primary:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  width: 100%;
+  background: none;
+  border: 1.5px solid #e2e8f0;
+  color: #475569;
+  padding: 0.75rem;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: 0.8rem;
+}
+
+.btn-outline:hover {
+  background: #f8fafc;
+}
+
+.signup-redirect {
+  text-align: center;
+  margin-top: 1.2rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.signup-redirect a {
+  color: #f97316;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.otp-boxes {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1.2rem 0;
+}
+
+.otp-digit,
+.reset-otp-digit {
+  width: 50px;
+  height: 60px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fafbfc;
+}
+
+.otp-digit:focus,
+.reset-otp-digit:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.08);
+}
+
+.otp-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.resend-link {
+  color: #f97316;
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.timer {
+  color: #64748b;
+}
+
+.password-strength {
+  margin: 0.5rem 0 0.75rem;
+}
+
+.strength-bar {
+  height: 6px;
+  border-radius: 6px;
+  background: #e2e8f0;
+  overflow: hidden;
+  margin-bottom: 0.3rem;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s, background 0.3s;
+}
+
+.strength-text {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.requirements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.req {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.req.valid {
+  color: #10b981;
+}
+
+.req.valid span {
+  content: '✅';
+}
+
+.toast-msg {
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  text-align: center;
+  min-height: 1.2rem;
+}
+
+.toast-msg.success {
+  color: #10b981;
+}
+
+.toast-msg.error {
+  color: #ef4444;
+}

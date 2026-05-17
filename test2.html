@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Gombe Online Market - Buy & Sell Locally</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #1a1a2e; }
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --primary-light: #fff7ed;
+            --secondary: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --radius: 20px;
+            --radius-sm: 12px;
+        }
+        .app { max-width: 480px; margin: 0 auto; background: #f8fafc; min-height: 100vh; position: relative; padding-bottom: 70px; }
+        .status { background: var(--primary); padding: 8px 16px; text-align: center; font-size: 11px; font-weight: 500; color: white; }
+        .header { background: var(--white); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gray-light); }
+        .logo h1 { font-size: 18px; font-weight: 700; color: var(--secondary); }
+        .logo span { color: var(--primary); }
+        .logo p { font-size: 9px; color: var(--gray); letter-spacing: 0.5px; }
+        .header-icons { display: flex; gap: 20px; align-items: center; }
+        .header-icons i { font-size: 20px; color: var(--secondary); cursor: pointer; }
+        .user-welcome { font-size: 12px; font-weight: 600; color: var(--primary); }
+        .logout-icon { cursor: pointer; color: var(--gray); }
+        .promo-banner { background: linear-gradient(135deg, #22c55e, #16a34a); margin: 0 16px 16px; padding: 12px; border-radius: 12px; text-align: center; color: white; font-size: 12px; font-weight: 600; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        .hero { background: linear-gradient(135deg, #f97316, #f59e0b); margin: 16px; padding: 28px 24px; border-radius: var(--radius); color: white; position: relative; overflow: hidden; }
+        .hero::before { content: '🛒'; position: absolute; font-size: 100px; opacity: 0.1; bottom: -20px; right: -10px; }
+        .hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .hero p { font-size: 13px; opacity: 0.95; margin-bottom: 16px; }
+        .hero-btn { background: white; color: var(--primary); border: none; padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 13px; cursor: pointer; }
+        .search-wrapper { padding: 12px 16px; }
+        .search-box { background: var(--white); border-radius: 30px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow); border: 1px solid var(--gray-light); }
+        .search-box i { color: var(--primary); font-size: 16px; }
+        .search-box input { flex: 1; border: none; outline: none; font-size: 14px; background: transparent; }
+        .categories { padding: 8px 16px; margin-top: 8px; }
+        .section-title { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+        .section-title h3 { font-size: 16px; font-weight: 700; color: var(--secondary); }
+        .section-title a { font-size: 12px; color: var(--primary); text-decoration: none; font-weight: 500; cursor: pointer; }
+        .category-scroll { display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; }
+        .category-scroll::-webkit-scrollbar { display: none; }
+        .category-item { text-align: center; min-width: 70px; cursor: pointer; transition: transform 0.2s; }
+        .category-item:hover { transform: translateY(-3px); }
+        .category-image { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; box-shadow: var(--shadow); background: #f1f5f9; }
+        .category-name { font-size: 11px; font-weight: 500; margin-top: 6px; color: var(--gray); }
+        .price-filter-wrapper { display: flex; align-items: center; gap: 12px; padding: 8px 16px; background: white; margin: 0 16px 12px; border-radius: 40px; box-shadow: var(--shadow); }
+        .price-filter-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+        .price-filter-left i { color: var(--primary); font-size: 14px; }
+        .price-filter-left input { flex: 1; height: 4px; border-radius: 5px; background: var(--gray-light); }
+        .price-filter-left span { font-size: 11px; color: var(--gray); font-weight: 500; min-width: 110px; }
+        .custom-price-btn { background: var(--primary-light); border: none; padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 600; color: var(--primary); cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .price-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 350; align-items: center; justify-content: center; }
+        .price-modal-content { background: white; border-radius: 28px; padding: 28px; width: 90%; max-width: 340px; animation: slideUp 0.3s ease; }
+        .price-modal-content h4 { font-size: 18px; margin-bottom: 16px; text-align: center; }
+        .price-modal-content input { width: 100%; padding: 14px; border: 2px solid var(--gray-light); border-radius: 14px; font-size: 14px; text-align: center; margin: 16px 0; }
+        .price-modal-buttons { display: flex; gap: 12px; }
+        .price-modal-buttons button { flex: 1; padding: 12px; border-radius: 14px; font-weight: 600; cursor: pointer; }
+        .btn-apply { background: var(--primary); color: white; border: none; }
+        .btn-clear { background: #f1f5f9; border: none; color: var(--gray); }
+        .filter-bar { padding: 8px 16px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+        .filter-bar::-webkit-scrollbar { display: none; }
+        .filter-btn { padding: 8px 20px; border-radius: 30px; background: var(--white); border: 1px solid var(--gray-light); font-size: 12px; font-weight: 500; white-space: nowrap; cursor: pointer; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .products-section { padding: 16px; }
+        .products-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+        .products-header h3 { font-size: 16px; font-weight: 700; }
+        .item-count { font-size: 12px; color: var(--gray); font-weight: normal; margin-left: 8px; }
+        .products-grid { display: flex; flex-direction: column; gap: 14px; }
+        .product-card { background: var(--white); border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow); transition: all 0.2s; cursor: pointer; }
+        .product-card:active { transform: scale(0.98); }
+        .product-content { display: flex; padding: 12px; gap: 12px; position: relative; }
+        .product-img { width: 95px; height: 95px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: #f1f5f9; }
+        .product-details { flex: 1; }
+        .product-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; padding-right: 70px; }
+        .product-price { font-size: 18px; font-weight: 800; color: var(--primary); margin: 4px 0; }
+        .seller-info { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 11px; color: var(--gray); flex-wrap: wrap; }
+        .seller-avatar { width: 20px; height: 20px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: bold; }
+        .rating { display: flex; align-items: center; gap: 3px; background: #fff3e0; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; }
+        .status-tag { position: absolute; top: 12px; right: 12px; font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+        .tag-new { background: #e8f5e9; color: #2e7d32; }
+        .tag-used { background: #fff3e0; color: #e65100; }
+        .tag-verified { background: #e3f2fd; color: #1565c0; top: 46px; }
+        .contact-btn { background: var(--primary-light); color: var(--primary); border: none; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; width: 100%; margin-top: 6px; cursor: pointer; }
+        .share-btn { position: absolute; bottom: 12px; right: 12px; background: rgba(255,255,255,0.9); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+        /* Modals */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; }
+        .modal-content { background: white; border-radius: 32px; max-width: 460px; width: 90%; max-height: 85vh; overflow-y: auto; padding: 20px; position: relative; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .modal-header h3 { font-size: 18px; font-weight: 700; }
+        .close-modal { font-size: 24px; cursor: pointer; color: var(--gray); }
+        .product-detail-img { width: 100%; border-radius: 20px; margin-bottom: 16px; }
+        .product-detail-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .product-detail-price { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 12px; }
+        .seller-detail { background: #f8fafc; padding: 12px; border-radius: 20px; margin: 16px 0; display: flex; align-items: center; gap: 12px; }
+        .seller-avatar-large { width: 48px; height: 48px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; color: white; }
+        .chat-modal .messages { max-height: 400px; overflow-y: auto; margin-bottom: 16px; }
+        .message { margin-bottom: 12px; display: flex; flex-direction: column; }
+        .message.sent { align-items: flex-end; }
+        .message.received { align-items: flex-start; }
+        .message-bubble { max-width: 80%; padding: 10px 14px; border-radius: 20px; background: #f1f5f9; font-size: 13px; }
+        .message.sent .message-bubble { background: var(--primary); color: white; }
+        .message-time { font-size: 10px; color: var(--gray); margin-top: 4px; margin-left: 8px; margin-right: 8px; }
+        .chat-input { display: flex; gap: 8px; margin-top: 8px; }
+        .chat-input input { flex: 1; padding: 12px; border: 1px solid var(--gray-light); border-radius: 30px; font-size: 14px; }
+        .chat-input button { background: var(--primary); border: none; width: 44px; height: 44px; border-radius: 30px; color: white; cursor: pointer; }
+        /* rest */
+        .reviews-section { padding: 16px; margin-top: 8px; }
+        .reviews-card { background: var(--white); border-radius: var(--radius-sm); padding: 16px; box-shadow: var(--shadow); }
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+        .review-actions { display: flex; gap: 10px; }
+        .btn-good, .btn-bad { padding: 8px 20px; border-radius: 25px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; }
+        .btn-good { background: #e8f5e9; color: #2e7d32; }
+        .btn-bad { background: #ffebee; color: #c62828; }
+        .review-stats { display: flex; gap: 20px; padding: 12px 0; border-top: 1px solid var(--gray-light); border-bottom: 1px solid var(--gray-light); margin-bottom: 12px; font-size: 12px; }
+        .review-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--gray-light); }
+        .image-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 300; align-items: center; justify-content: center; cursor: pointer; }
+        .image-modal img { max-width: 90%; max-height: 90%; border-radius: 16px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); box-shadow: 0 -2px 10px rgba(0,0,0,0.05); padding: 10px 24px; max-width: 480px; margin: 0 auto; }
+        .nav-items { display: flex; justify-content: space-around; }
+        .nav-item { text-align: center; cursor: pointer; padding: 4px 0; position: relative; }
+        .nav-item i { font-size: 22px; color: #aaa; }
+        .nav-item span { font-size: 10px; display: block; margin-top: 4px; color: #aaa; }
+        .nav-item.active i, .nav-item.active span { color: var(--primary); }
+        .fab { position: fixed; bottom: 80px; right: 16px; width: 52px; height: 52px; background: var(--primary); border-radius: 26px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(249,115,22,0.4); border: none; z-index: 99; }
+        .auth-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 400; align-items: center; justify-content: center; }
+        .auth-container { background: white; border-radius: 28px; padding: 28px; width: 90%; max-width: 380px; }
+        .auth-tabs { display: flex; gap: 12px; margin-bottom: 24px; }
+        .auth-tab { flex: 1; text-align: center; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        .auth-tab.active { background: var(--primary); color: white; }
+        .auth-input { width: 100%; padding: 14px; border: 1px solid var(--gray-light); border-radius: 12px; margin-bottom: 12px; font-size: 14px; }
+        .auth-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 600; margin-top: 16px; cursor: pointer; }
+        .close-auth { text-align: right; margin-bottom: 8px; cursor: pointer; font-size: 20px; color: var(--gray); }
+        .footer { background: var(--secondary); color: white; padding: 20px 16px; text-align: center; margin-top: 20px; }
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: white; padding: 10px 20px; border-radius: 30px; font-size: 12px; z-index: 1000; animation: fadeOut 3s; }
+        @keyframes fadeOut { 0% { opacity: 0; transform: translateX(-50%) translateY(20px); } 15% { opacity: 1; transform: translateX(-50%) translateY(0); } 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+        .unread-badge { position: absolute; top: -5px; right: -8px; background: red; color: white; border-radius: 10px; padding: 2px 6px; font-size: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="status">🏆 Gombe's #1 Trusted Marketplace | ⭐ 4.9/5</div>
+    <div class="header">
+        <div class="logo"><h1>Gombe<span>Market</span></h1><p>by SHATOVA TECH</p></div>
+        <div class="header-icons" id="headerIcons">
+            <i class="far fa-heart" onclick="requireAuth('wishlist')"></i>
+            <i class="far fa-bell" onclick="requireAuth('notifications')"></i>
+            <i class="far fa-user" onclick="openAuthModal()"></i>
+        </div>
+    </div>
+    <div class="promo-banner">🎉 FREE DELIVERY on all items this week! 🎉</div>
+    <div class="hero">
+        <h2>Welcome to Gombe Online Markets 🏪</h2>
+        <p>Buy and sell with confidence in Gombe State</p>
+        <button class="hero-btn" onclick="requireAuth('sell')">Start Selling →</button>
+    </div>
+    <div class="search-wrapper"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search for phones, cars, clothes..."></div></div>
+    <div class="categories"><div class="section-title"><h3>Browse Categories</h3><a onclick="showAllProducts()">See All →</a></div>
+    <div class="category-scroll">
+        <div class="category-item" onclick="filterByCategory('Phones')"><img class="category-image" src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=65&h=65&fit=crop"><div class="category-name">Phones</div></div>
+        <div class="category-item" onclick="filterByCategory('Cars')"><img class="category-image" src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=65&h=65&fit=crop"><div class="category-name">Cars</div></div>
+        <div class="category-item" onclick="filterByCategory('Fashion')"><img class="category-image" src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=65&h=65&fit=crop"><div class="category-name">Fashion</div></div>
+        <div class="category-item" onclick="filterByCategory('Laptops')"><img class="category-image" src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=65&h=65&fit=crop"><div class="category-name">Laptops</div></div>
+        <div class="category-item" onclick="filterByCategory('Furniture')"><img class="category-image" src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=65&h=65&fit=crop"><div class="category-name">Furniture</div></div>
+    </div></div>
+
+    <div class="price-filter-wrapper"><div class="price-filter-left"><i class="fas fa-sliders-h"></i><input type="range" id="priceRange" min="0" max="10000000" step="50000" value="10000000"><span id="priceValue">Up to ₦10,000,000</span></div><button class="custom-price-btn" onclick="openCustomPriceModal()"><i class="fas fa-pen"></i> Custom</button></div>
+    <div id="customPriceModal" class="price-modal"><div class="price-modal-content"><h4>💰 Set Your Budget</h4><input type="number" id="customMaxPrice" value="10000000"><div class="price-modal-buttons"><button class="btn-clear" onclick="closeCustomPriceModal()">Cancel</button><button class="btn-apply" onclick="applyCustomPrice()">Apply Filter</button></div></div></div>
+
+    <div class="filter-bar"><button class="filter-btn active" data-filter="all">All Items</button><button class="filter-btn" data-filter="new">Brand New</button><button class="filter-btn" data-filter="used">Second Hand</button><button class="filter-btn" data-sort="price_low">Price: Low</button><button class="filter-btn" data-sort="price_high">Price: High</button></div>
+
+    <div class="products-section"><div class="products-header"><h3>🔥 Trending Items <span id="itemCount" class="item-count"></span></h3><a style="font-size:12px;color:var(--primary);cursor:pointer;">View All</a></div><div class="products-grid" id="productsGrid"></div></div>
+
+    <div class="reviews-section"><div class="reviews-card"><div class="review-header"><div><h4 style="font-size:14px;">Community Reviews</h4><p style="font-size:11px;color:var(--gray);">Trusted by local buyers</p></div><div class="review-actions"><button class="btn-good" onclick="requireAuth('review')">👍 Good</button><button class="btn-bad" onclick="requireAuth('review')">👎 Bad</button></div></div><div class="review-stats"><span>👍 <strong id="goodCount">0</strong> Good</span><span>👎 <strong id="badCount">0</strong> Bad</span><span>📝 <strong id="totalReviews">0</strong> Total</span></div><div id="reviewList"></div></div></div>
+
+    <div class="footer"><p style="font-size:11px;">Developed by SHATOVA TECH</p><p style="font-size:10px;margin-top:6px;">Gombe State, Nigeria | Farrok Jr</p><p style="font-size:9px;margin-top:8px;">© 2024 GombeMarket</p></div>
+
+    <div class="bottom-nav"><div class="nav-items"><div class="nav-item active" onclick="scrollToTop()"><i class="fas fa-home"></i><span>Home</span></div><div class="nav-item" id="chatNavBtn" onclick="openGlobalChat()"><i class="fas fa-comment"></i><span>Chat</span><span id="globalUnreadBadge" class="unread-badge" style="display:none;">0</span></div><div class="nav-item" onclick="requireAuth('sell')"><i class="fas fa-plus-circle"></i><span>Sell</span></div><div class="nav-item" onclick="scrollToReviews()"><i class="fas fa-star"></i><span>Reviews</span></div><div class="nav-item" onclick="requireAuth('profile')"><i class="fas fa-user"></i><span>Profile</span></div></div></div>
+    <button class="fab" onclick="requireAuth('sell')">+</button>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="modal"><div class="modal-content" id="productModalContent"></div></div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal"><div class="modal-content chat-modal"><div class="modal-header"><h3 id="chatTitle">Chat with Seller</h3><span class="close-modal" onclick="closeChatModal()">✕</span></div><div id="chatMessages" class="messages"></div><div class="chat-input"><input type="text" id="chatInput" placeholder="Type a message..."><button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button></div></div></div>
+
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()"><img id="modalImage" src=""></div>
+
+    <div id="authModal" class="auth-modal"><div class="auth-container"><div class="close-auth" onclick="closeAuthModal()">✕</div><div class="auth-tabs"><div class="auth-tab active" onclick="switchAuthTab('login')">Login</div><div class="auth-tab" onclick="switchAuthTab('register')">Register</div></div><div id="loginForm"><input type="text" id="loginEmail" class="auth-input" placeholder="Email or Phone"><input type="password" id="loginPassword" class="auth-input" placeholder="Password"><button class="auth-btn" onclick="loginUser()">Login →</button><p style="text-align:center;margin-top:16px;font-size:12px;color:var(--gray);">New to GombeMarket? <span style="color:var(--primary);cursor:pointer;" onclick="switchAuthTab('register')">Create account</span></p></div><div id="registerForm" style="display:none;"><input type="text" id="regFullname" class="auth-input" placeholder="Full Name"><input type="email" id="regEmail" class="auth-input" placeholder="Email"><input type="tel" id="regPhone" class="auth-input" placeholder="Phone Number"><input type="text" id="regLocation" class="auth-input" placeholder="Location" value="Gombe"><input type="password" id="regPassword" class="auth-input" placeholder="Password"><button class="auth-btn" onclick="registerUser()">Create Account →</button></div></div></div>
+</div>
+
+<script>
+    // Products Data
+    let products = [
+        { id: 1, name: "iPhone 15 Pro Max", price: 1250000, seller: "Apple Store NG", sellerId: 1, rating: 5.0, sellerRating: 4.9, sellerReviews: 128, image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=95&h=95&fit=crop", condition: "new", verified: true, location: "Gombe", category: "Phones", description: "Latest iPhone with A17 Pro chip, 256GB storage. Like new." },
+        { id: 2, name: "Samsung Galaxy S24", price: 850000, seller: "Tech Haven", sellerId: 2, rating: 4.9, sellerRating: 4.8, sellerReviews: 95, image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=95&h=95&fit=crop", condition: "new", verified: true, location: "Gombe", category: "Phones", description: "Brand new Samsung Galaxy S24, 8GB RAM, 256GB." },
+        { id: 3, name: "iPhone 14 Pro", price: 650000, seller: "Mobile World", sellerId: 3, rating: 4.8, sellerRating: 4.7, sellerReviews: 245, image: "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?w=95&h=95&fit=crop", condition: "used", verified: true, location: "Gombe City", category: "Phones", description: "Used but in excellent condition. 128GB, deep purple." },
+        { id: 4, name: "Toyota Camry 2022", price: 8500000, seller: "Auto Plaza", sellerId: 4, rating: 4.9, sellerRating: 4.9, sellerReviews: 12, image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=95&h=95&fit=crop", condition: "used", verified: true, location: "Gombe", category: "Cars", description: "Low mileage, clean interior, perfect condition." },
+        { id: 5, name: "Nike Air Max", price: 85000, seller: "Fashion Hub", sellerId: 5, rating: 4.7, sellerRating: 4.6, sellerReviews: 567, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=95&h=95&fit=crop", condition: "new", verified: false, location: "Gombe Mall", category: "Fashion", description: "Authentic Nike Air Max, size 42-45." },
+        { id: 6, name: "MacBook Pro M3", price: 1950000, seller: "Apple Store NG", sellerId: 1, rating: 5.0, sellerRating: 4.9, sellerReviews: 89, image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=95&h=95&fit=crop", condition: "new", verified: true, location: "Gombe", category: "Laptops", description: "M3 chip, 16GB RAM, 512GB SSD." }
+    ];
+
+    let reviews = [
+        { id: 1, user: "Musa Abubakar", text: "Great platform! Found exactly what I needed.", type: "good", date: "2024-01-15" },
+        { id: 2, user: "Amina Bello", text: "Very trustworthy sellers. Great experience!", type: "good", date: "2024-01-14" }
+    ];
+
+    let currentUser = null;
+    let users = JSON.parse(localStorage.getItem('gombe_users')) || [];
+
+    let currentFilter = "all";
+    let currentCategory = "all";
+    let maxPrice = 10000000;
+
+    // Chat storage: key = `chat_${buyerId}_${sellerId}` or `chat_${userId}_${productId}`; we'll use combination: `chat_${currentUser.id}_${sellerId}`
+    let messagesDB = JSON.parse(localStorage.getItem('gombe_messages')) || {};
+
+    // Helper functions
+    function formatPrice(price) { return '₦' + price.toLocaleString('en-NG'); }
+    function showToast(msg) { const toast = document.createElement('div'); toast.className = 'toast'; toast.innerHTML = msg; document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000); }
+
+    // Price & filter
+    function openCustomPriceModal() { document.getElementById('customPriceModal').style.display = 'flex'; document.getElementById('customMaxPrice').value = maxPrice; }
+    function closeCustomPriceModal() { document.getElementById('customPriceModal').style.display = 'none'; }
+    function applyCustomPrice() { let customPrice = parseInt(document.getElementById('customMaxPrice').value); if (isNaN(customPrice) || customPrice < 0) { showToast("Please enter a valid amount"); return; } maxPrice = customPrice; document.getElementById('priceRange').value = Math.min(customPrice, 10000000); document.getElementById('priceValue').innerHTML = customPrice >= 10000000 ? 'Up to ₦10,000,000+' : `Up to ₦${customPrice.toLocaleString()}`; closeCustomPriceModal(); renderProducts(); showToast(`💰 Showing items up to ${formatPrice(maxPrice)}`); }
+
+    // Auth
+    function openAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
+    function closeAuthModal() { document.getElementById('authModal').style.display = 'none'; }
+    function switchAuthTab(tab) { const tabs = document.querySelectorAll('.auth-tab'); tabs.forEach(t => t.classList.remove('active')); if (tab === 'login') { tabs[0].classList.add('active'); document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; } else { tabs[1].classList.add('active'); document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; } }
+    function registerUser() { const fullname = document.getElementById('regFullname').value; const email = document.getElementById('regEmail').value; const phone = document.getElementById('regPhone').value; const location = document.getElementById('regLocation').value; const password = document.getElementById('regPassword').value; if (!fullname || !email || !phone || !location || !password) { showToast("Please fill all fields"); return; } if (users.find(u => u.email === email)) { showToast("Email already registered"); return; } const newUser = { id: users.length + 1, fullname, email, phone, location, password, wallet: 50000 }; users.push(newUser); localStorage.setItem('gombe_users', JSON.stringify(users)); showToast("✅ Registration successful! Please login."); switchAuthTab('login'); document.getElementById('regFullname').value = ''; document.getElementById('regEmail').value = ''; document.getElementById('regPhone').value = ''; document.getElementById('regLocation').value = ''; document.getElementById('regPassword').value = ''; }
+    function loginUser() { const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value; if (!email || !password) { showToast("Please enter email and password"); return; } const user = users.find(u => u.email === email && u.password === password); if (!user) { showToast("Invalid email or password"); return; } currentUser = user; localStorage.setItem('gombe_currentUser', JSON.stringify(currentUser)); document.getElementById('headerIcons').innerHTML = `<span class="user-welcome">Hi, ${currentUser.fullname.split(' ')[0]}</span><i class="fas fa-sign-out-alt logout-icon" onclick="logout()"></i>`; closeAuthModal(); showToast(`✅ Welcome back, ${currentUser.fullname}!`); updateUnreadBadge(); }
+    function logout() { currentUser = null; localStorage.removeItem('gombe_currentUser'); document.getElementById('headerIcons').innerHTML = `<i class="far fa-heart" onclick="requireAuth('wishlist')"></i><i class="far fa-bell" onclick="requireAuth('notifications')"></i><i class="far fa-user" onclick="openAuthModal()"></i>`; showToast("Logged out successfully"); updateUnreadBadge(); }
+    function requireAuth(action) { if (currentUser) { if (action === 'sell') showToast("📦 Sell feature coming soon!"); else if (action === 'chat') openGlobalChat(); else if (action === 'profile') showProfile(); else if (action === 'review') showToast("⭐ Review feature coming soon!"); else if (action === 'wishlist') showToast("❤️ Wishlist coming soon!"); else if (action === 'notifications') showToast("🔔 Notifications coming soon!"); else showToast(`✨ ${action} feature coming soon!`); } else { openAuthModal(); showToast("🔐 Please login to continue"); } }
+    function showProfile() { if (!currentUser) { openAuthModal(); return; } showToast(`👤 Welcome ${currentUser.fullname}\n📍 ${currentUser.location}\n💰 ${formatPrice(currentUser.wallet)}`); }
+
+    // Product & Chat functions
+    function renderProducts() {
+        const grid = document.getElementById('productsGrid');
+        let filtered = [...products];
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
+        if (searchText) filtered = filtered.filter(p => p.name.toLowerCase().includes(searchText));
+        if (currentFilter !== "all") filtered = filtered.filter(p => p.condition === currentFilter);
+        if (currentCategory !== "all") filtered = filtered.filter(p => p.category === currentCategory);
+        filtered = filtered.filter(p => p.price <= maxPrice);
+        document.getElementById('itemCount').innerHTML = `(${filtered.length} items)`;
+        if (filtered.length === 0) { grid.innerHTML = `<div style="text-align:center;padding:60px;"><div>🔍</div><h3>No items found</h3><button onclick="showAllProducts()" style="margin-top:16px;padding:8px 24px;background:var(--primary);color:white;border:none;border-radius:25px;">View All Items</button></div>`; return; }
+        grid.innerHTML = filtered.map(product => `<div class="product-card" onclick="openProductDetail(${product.id})"><div class="product-content"><img class="product-img" src="${product.image}"><button class="share-btn" onclick="event.stopPropagation(); shareProduct('${product.name}', '${formatPrice(product.price)}')"><i class="fas fa-share-alt"></i></button><div class="product-details"><div class="product-title">${product.name}</div><div class="product-price">${formatPrice(product.price)}</div><div class="seller-info"><div class="seller-avatar">${product.seller.charAt(0)}</div><span>${product.seller}</span><span>📍 ${product.location}</span><div class="rating">⭐ ${product.rating}</div></div><button class="contact-btn" onclick="event.stopPropagation(); openProductDetail(${product.id})">💬 View Details</button></div><div class="status-tag ${product.condition === 'new' ? 'tag-new' : 'tag-used'}">${product.condition === 'new' ? '🆕 NEW' : '🔄 USED'}</div>${product.verified ? `<div class="status-tag tag-verified">✓ VERIFIED</div>` : ''}</div></div>`).join('');
+    }
+
+    function openProductDetail(productId) {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+        const modal = document.getElementById('productModal');
+        const content = document.getElementById('productModalContent');
+        content.innerHTML = `
+            <div class="modal-header"><h3>${product.name}</h3><span class="close-modal" onclick="closeProductModal()">✕</span></div>
+            <img src="${product.image}" class="product-detail-img">
+            <div class="product-detail-title">${product.name}</div>
+            <div class="product-detail-price">${formatPrice(product.price)}</div>
+            <div class="seller-detail"><div class="seller-avatar-large">${product.seller.charAt(0)}</div><div><strong>${product.seller}</strong><br>📍 ${product.location}<br>⭐ ${product.rating} (${product.sellerReviews} reviews)</div></div>
+            <p><strong>Description:</strong> ${product.description}</p>
+            <div style="margin-top:20px; display:flex; gap:12px;">
+                <button class="btn-primary" style="flex:1;" onclick="contactSeller(${product.sellerId}, '${product.seller}')">📩 Contact Seller</button>
+                <button class="btn-outline" onclick="closeProductModal()">Close</button>
+            </div>
+        `;
+        modal.style.display = 'flex';
+    }
+    function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
+
+    function contactSeller(sellerId, sellerName) {
+        closeProductModal();
+        openChatWith(sellerId, sellerName);
+    }
+
+    // Chat functions
+    function openChatWith(sellerId, sellerName) {
+        if (!currentUser) { openAuthModal(); showToast("Please login to chat"); return; }
+        document.getElementById('chatTitle').innerHTML = `Chat with ${sellerName}`;
+        document.getElementById('chatModal').style.display = 'flex';
+        loadMessages(sellerId);
+        document.getElementById('sendMessageBtn').onclick = () => sendMessage(sellerId);
+        const input = document.getElementById('chatInput');
+        input.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(sellerId); };
+    }
+
+    function openGlobalChat() {
+        if (!currentUser) { openAuthModal(); showToast("Login to see chats"); return; }
+        // Show list of recent chats or prompt to select a seller. For simplicity, show all conversations or show empty.
+        // We'll implement a simple recent chats list modal.
+        showRecentChats();
+    }
+
+    function showRecentChats() {
+        // collect unique sellerIds that current user has chatted with
+        const keys = Object.keys(messagesDB);
+        const myChats = keys.filter(k => k.startsWith(`chat_${currentUser.id}_`)).map(k => k.split('_')[2]);
+        if (myChats.length === 0) { showToast("No active chats. Start by contacting a seller."); return; }
+        let sellers = [];
+        for (let sid of myChats) {
+            let seller = products.find(p => p.sellerId == sid);
+            if (!seller) seller = { sellerId: sid, seller: `Seller ${sid}` };
+            sellers.push({ id: sid, name: seller.seller });
+        }
+        // simplified: open first chat? better show a selection modal
+        if (sellers.length === 1) openChatWith(sellers[0].id, sellers[0].name);
+        else {
+            let msg = "Your chats:\n" + sellers.map(s => `${s.name} (ID ${s.id})`).join('\n');
+            prompt("Enter seller ID to chat:", sellers[0]?.id);
+            // For simplicity, we just open first chat or ask. We'll improve: show a modal.
+            const sid = prompt("Enter seller ID to chat:", sellers[0]?.id);
+            if (sid) {
+                const s = sellers.find(s => s.id == sid);
+                if (s) openChatWith(s.id, s.name);
+                else showToast("Invalid seller ID");
+            }
+        }
+    }
+
+    function loadMessages(sellerId) {
+        const key = `chat_${currentUser.id}_${sellerId}`;
+        const messages = messagesDB[key] || [];
+        const container = document.getElementById('chatMessages');
+        container.innerHTML = messages.map(msg => `
+            <div class="message ${msg.sender === currentUser.id ? 'sent' : 'received'}">
+                <div class="message-bubble">${msg.text}</div>
+                <div class="message-time">${new Date(msg.time).toLocaleTimeString()}</div>
+            </div>
+        `).join('');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function sendMessage(sellerId) {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+        const key = `chat_${currentUser.id}_${sellerId}`;
+        if (!messagesDB[key]) messagesDB[key] = [];
+        messagesDB[key].push({ sender: currentUser.id, text, time: Date.now() });
+        localStorage.setItem('gombe_messages', JSON.stringify(messagesDB));
+        input.value = '';
+        loadMessages(sellerId);
+        // Also add message to seller's perspective if they were logged in (in reality both sides)
+        const reverseKey = `chat_${sellerId}_${currentUser.id}`;
+        if (!messagesDB[reverseKey]) messagesDB[reverseKey] = [];
+        messagesDB[reverseKey].push({ sender: currentUser.id, text, time: Date.now() });
+        localStorage.setItem('gombe_messages', JSON.stringify(messagesDB));
+        updateUnreadBadge();
+    }
+
+    function updateUnreadBadge() {
+        if (!currentUser) {
+            document.getElementById('globalUnreadBadge').style.display = 'none';
+            return;
+        }
+        let unread = 0;
+        for (let key in messagesDB) {
+            if (key.startsWith(`chat_${currentUser.id}_`)) continue;
+            if (key.endsWith(`_${currentUser.id}`)) {
+                const msgs = messagesDB[key];
+                const lastMsg = msgs[msgs.length-1];
+                if (lastMsg && lastMsg.sender != currentUser.id) unread++;
+            }
+        }
+        const badge = document.getElementById('globalUnreadBadge');
+        if (unread > 0) { badge.textContent = unread; badge.style.display = 'inline-block'; }
+        else badge.style.display = 'none';
+    }
+
+    function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
+
+    function shareProduct(name, price) { if (navigator.share) navigator.share({ title: name, text: `Check out ${name} for ${price} on GombeMarket!` }); else { navigator.clipboard.writeText(`${name} - ${price} on GombeMarket`); showToast("📋 Link copied!"); } }
+    function filterByCategory(category) { currentCategory = category; renderProducts(); showToast(`📁 Showing ${category}`); document.getElementById('searchInput').value = ''; }
+    function showAllProducts() { currentCategory = "all"; currentFilter = "all"; maxPrice = 10000000; document.getElementById('priceRange').value = "10000000"; document.getElementById('priceValue').innerHTML = "Up to ₦10,000,000"; document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active')); document.querySelector('.filter-btn[data-filter="all"]').classList.add('active'); renderProducts(); }
+    function renderReviews() { const goodCount = reviews.filter(r => r.type === 'good').length; const badCount = reviews.filter(r => r.type === 'bad').length; document.getElementById('goodCount').innerHTML = goodCount; document.getElementById('badCount').innerHTML = badCount; document.getElementById('totalReviews').innerHTML = reviews.length; const reviewList = document.getElementById('reviewList'); reviewList.innerHTML = reviews.slice().reverse().map(review => `<div class="review-item"><div style="font-size:22px;">${review.type === 'good' ? '👍' : '👎'}</div><div style="flex:1"><div style="font-weight:600;">${review.user}</div><div style="font-size:12px;color:var(--gray);">${review.text}</div><div style="font-size:10px;color:#aaa;">${review.date}</div></div></div>`).join(''); }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    function scrollToReviews() { document.querySelector('.reviews-section').scrollIntoView({ behavior: 'smooth' }); }
+    function closeImageModal() { document.getElementById('imageModal').style.display = 'none'; }
+
+    // Event listeners
+    const priceRange = document.getElementById('priceRange');
+    const priceValue = document.getElementById('priceValue');
+    priceRange.addEventListener('input', function() { maxPrice = parseInt(this.value); priceValue.innerHTML = maxPrice >= 10000000 ? 'Up to ₦10,000,000+' : `Up to ₦${maxPrice.toLocaleString()}`; renderProducts(); });
+    document.querySelectorAll('.filter-btn').forEach(btn => { btn.addEventListener('click', function() { if (this.dataset.filter) { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); currentFilter = this.dataset.filter; renderProducts(); } if (this.dataset.sort === 'price_low') { products.sort((a,b) => a.price - b.price); renderProducts(); } if (this.dataset.sort === 'price_high') { products.sort((a,b) => b.price - a.price); renderProducts(); } }); });
+    document.getElementById('searchInput').addEventListener('input', renderProducts);
+    window.onclick = (event) => { if (event.target.classList.contains('image-modal')) closeImageModal(); if (event.target.classList.contains('auth-modal')) closeAuthModal(); if (event.target.classList.contains('price-modal')) closeCustomPriceModal(); if (event.target.classList.contains('modal')) closeProductModal(); if (event.target.classList.contains('modal')) closeChatModal(); };
+
+    const savedUser = localStorage.getItem('gombe_currentUser');
+    if (savedUser) { currentUser = JSON.parse(savedUser); document.getElementById('headerIcons').innerHTML = `<span class="user-welcome">Hi, ${currentUser.fullname.split(' ')[0]}</span><i class="fas fa-sign-out-alt logout-icon" onclick="logout()"></i>`; updateUnreadBadge(); }
+
+    renderProducts();
+    renderReviews();
+</script>
+</body>
+</html>
