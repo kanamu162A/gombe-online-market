@@ -1,5 +1,5 @@
 // === CONFIGURATION ===
-const API_BASE = 'http://localhost:4040';
+  const BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:4040' : 'https://gombe-online-market.onrender.com';
 
 // === DOM elements ===
 const fullnameEl = document.getElementById('fullname');
