@@ -1,6 +1,6 @@
 
   // ---------- Auto-detect API base URL ----------
-  const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  const BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:4040' : 'https://gombe-online-market.onrender.com';
     ? 'http://localhost:4040'
     : 'https://your-production-api.com';  // change to your live domain
 
