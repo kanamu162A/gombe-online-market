@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Gombe Market · Seller Hub</title>
+  <title>Gombe Market · Seller Messaging & Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
@@ -60,7 +60,6 @@
       transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
       z-index: 1001;
       overflow-y: auto;
-      will-change: transform;
       box-shadow: 4px 0 25px rgba(0,0,0,0.1);
     }
     .sidebar.open { transform: translateX(0); }
@@ -132,7 +131,8 @@
     .stat-value { font-size: 2rem; font-weight: 800; line-height: 1.2; }
     .wallet-card {
       background: linear-gradient(115deg, #f97316, #e65c0c);
-      border-radius: 34px; padding: 24px 32px; margin-bottom: 28px;
+      border-radius: 34px; padding: 24px 32px;
+      margin-bottom: 28px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -144,7 +144,8 @@
     .wallet-account { background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); padding: 6px 16px; border-radius: 60px; display: inline-block; cursor: pointer; font-size: 0.8rem; margin-top: 8px; }
     .section-card {
       background: white; border-radius: 34px; padding: 26px;
-      margin-bottom: 30px; border: 1px solid #ecf3f9;
+      margin-bottom: 30px;
+      border: 1px solid #ecf3f9;
     }
     .list-item {
       background: #ffffff; border-radius: 24px; padding: 14px 20px;
@@ -221,18 +222,67 @@
     }
     .avail-available { background: #dcfce7; color: #166534; }
     .avail-sold { background: #fee2e2; color: #991b1b; }
+    /* Chat specific */
+    .chat-conversations {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .conversation-list {
+      flex: 1;
+      min-width: 260px;
+      background: #f9fafb;
+      border-radius: 28px;
+      padding: 12px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .conversation-item {
+      padding: 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.08s;
+      border: 1px solid transparent;
+    }
+    .conversation-item:hover { background: #fff0e6; }
+    .conversation-item.active { background: white; border-color: #f97316; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .chat-window {
+      flex: 2;
+      min-width: 300px;
+      background: white;
+      border-radius: 28px;
+      display: flex;
+      flex-direction: column;
+      max-height: 70vh;
+    }
+    .chat-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #edf2f8;
+      font-weight: 700;
+    }
     .chat-messages {
-      max-height: 400px; overflow-y: auto; margin-bottom: 20px;
-      background: #f9fafb; border-radius: 24px; padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .chat-message {
-      margin-bottom: 12px; padding: 8px 14px; border-radius: 20px;
-      max-width: 80%;
+    .message-bubble {
+      max-width: 75%;
+      padding: 10px 16px;
+      border-radius: 24px;
+      word-wrap: break-word;
     }
-    .chat-message.seller { background: #f97316; color: white; margin-left: auto; text-align: right; }
-    .chat-message.support { background: #e2e8f0; color: #1e293b; }
-    .chat-input-group { display: flex; gap: 12px; }
-    .chat-input-group input { flex: 1; padding: 12px 18px; border-radius: 60px; border: 1px solid #e2edf2; }
+    .message-seller { background: #f97316; color: white; align-self: flex-end; }
+    .message-buyer { background: #e2e8f0; color: #1e293b; align-self: flex-start; }
+    .chat-input-area {
+      padding: 16px;
+      border-top: 1px solid #edf2f8;
+      display: flex;
+      gap: 12px;
+    }
+    .chat-input-area input { flex: 1; padding: 12px 18px; border-radius: 60px; border: 1px solid #e2edf2; }
   </style>
 </head>
 <body>
@@ -253,7 +303,7 @@
       <button class="nav-link" data-page="transactions"><i class="fas fa-exchange-alt"></i> Transactions</button>
       <button class="nav-link" data-page="sell"><i class="fas fa-plus-circle"></i> Sell Product</button>
       <button class="nav-link" data-page="my-products"><i class="fas fa-store"></i> My Listings</button>
-      <button class="nav-link" data-page="chat"><i class="fas fa-headset"></i> Support Chat</button>
+      <button class="nav-link" data-page="messages"><i class="fas fa-comments"></i> Buyer Messages <span class="badge" id="unreadBadge">0</span></button>
       <button class="nav-link" data-page="settings"><i class="fas fa-sliders-h"></i> Settings</button>
     </nav>
     <div style="margin-top: auto; padding: 20px 12px;"><button class="logout-sidebar" id="logoutSidebarBtn"><i class="fas fa-sign-out-alt"></i> Sign out</button></div>
@@ -389,7 +439,7 @@
       </div>
       <div class="wallet-card">
         <div><div>💰 Wallet Balance</div><div class="wallet-balance">₦${(user.walletBalance || 0).toLocaleString()}</div><div class="wallet-account" id="copyAccountBtn"><span>${user.accountNumber || 'N/A'}</span> <i class="fas fa-copy"></i></div></div>
-        <button class="btn-primary" id="withdrawBtn" style="align-self: center;"><i class="fas fa-hand-holding-usd"></i> Withdraw</button>
+        <button class="btn-primary" id="withdrawBtn"><i class="fas fa-hand-holding-usd"></i> Withdraw</button>
       </div>
       <div class="section-card"><div style="display:flex; justify-content:space-between;"><h3>📦 Recent orders</h3><button class="btn-primary" id="viewAllOrdersBtn" style="padding:6px 18px;">View all</button></div><div id="recentOrdersList"></div></div>
     `;
@@ -397,8 +447,7 @@
     if (recentOrders?.length) recentDiv.innerHTML = recentOrders.map(o => `<div class="list-item"><div><strong>${o.order_number}</strong><br><small>${new Date(o.created_at).toLocaleDateString()}</small></div><span class="status-badge status-${o.status}">${o.status}</span><strong>₦${(o.total_amount).toLocaleString()}</strong></div>`).join('');
     else recentDiv.innerHTML = '<div class="empty-state" style="padding:20px; text-align:center;">✨ No recent orders</div>';
     document.getElementById('copyAccountBtn')?.addEventListener('click', () => { navigator.clipboard.writeText(user.accountNumber || ''); showToast("Account number copied"); });
-    const withdrawBtn = document.getElementById('withdrawBtn');
-    withdrawBtn.addEventListener('click', () => openWithdrawModal(user.walletBalance));
+    document.getElementById('withdrawBtn').addEventListener('click', () => openWithdrawModal(user.walletBalance));
     document.getElementById('viewAllOrdersBtn')?.addEventListener('click', () => switchPage('orders'));
   }
 
@@ -533,72 +582,117 @@
     renderMyProducts();
   });
 
-  // Chat page - real API if exists, else mock
-  async function renderChat() {
+  // ---------- BUYER MESSAGES (Seller-Buyer Chat) ----------
+  let conversations = [];
+  let activeConversationId = null;
+  let messagePollInterval = null;
+
+  async function loadConversations() {
+    const res = await apiCall('/api/messages/conversations');
+    conversations = res.data || [];
+    const unread = conversations.filter(c => c.unreadCount > 0).length;
+    document.getElementById('unreadBadge').innerText = unread;
+    return conversations;
+  }
+
+  async function loadMessages(conversationId) {
+    const res = await apiCall(`/api/messages/${conversationId}`);
+    return res.data || [];
+  }
+
+  async function sendMessage(conversationId, message) {
+    await apiCall(`/api/messages/${conversationId}`, { method: 'POST', body: JSON.stringify({ message }) });
+  }
+
+  async function renderMessagesPage() {
     const container = document.getElementById('pageContainer');
     container.innerHTML = `
       <div class="section-card">
-        <h3><i class="fas fa-headset"></i> Support Chat</h3>
-        <div id="chatMessages" class="chat-messages">
-          <div class="chat-message support">👋 Hello! How can we help you today?</div>
+        <h3><i class="fas fa-comments"></i> Buyer Messages</h3>
+        <div class="chat-conversations">
+          <div class="conversation-list" id="conversationList"><div class="loading-skeleton"></div></div>
+          <div class="chat-window" id="chatWindow">
+            <div class="chat-header" id="chatHeader">Select a conversation</div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input-area" id="chatInputArea" style="display:none;">
+              <input type="text" id="messageInput" placeholder="Type your reply...">
+              <button class="btn-primary" id="sendMsgBtn">Send</button>
+            </div>
+          </div>
         </div>
-        <form id="chatForm" class="chat-input-group">
-          <input type="text" id="chatInput" placeholder="Type your message..." required>
-          <button type="submit" class="btn-primary" id="sendChatBtn">Send</button>
-        </form>
       </div>
     `;
-    // try to fetch existing messages
-    try {
-      const res = await apiCall('/api/support/messages');
-      if (res.data && res.data.length) {
-        const messagesDiv = document.getElementById('chatMessages');
-        messagesDiv.innerHTML = res.data.map(msg => `<div class="chat-message ${msg.sender === 'seller' ? 'seller' : 'support'}">${escapeHtml(msg.text)}</div>`).join('');
+    await refreshConversationsList();
+    if (activeConversationId) {
+      await openConversation(activeConversationId);
+    }
+    if (messagePollInterval) clearInterval(messagePollInterval);
+    messagePollInterval = setInterval(async () => {
+      if (activeConversationId && document.getElementById('chatMessages')) {
+        await openConversation(activeConversationId, false);
+      } else if (!activeConversationId) {
+        await refreshConversationsList();
       }
-    } catch(e) { /* no api, use default mock */ }
-    const sendBtn = document.getElementById('sendChatBtn');
-    const handler = withLoading(sendBtn, async (e) => {
-      e.preventDefault();
-      const input = document.getElementById('chatInput');
+    }, 5000);
+  }
+
+  async function refreshConversationsList() {
+    const convos = await loadConversations();
+    const listDiv = document.getElementById('conversationList');
+    if (!listDiv) return;
+    if (!convos.length) {
+      listDiv.innerHTML = '<div class="empty-state" style="padding:20px;">No buyer messages yet</div>';
+      return;
+    }
+    listDiv.innerHTML = convos.map(c => `
+      <div class="conversation-item ${activeConversationId === c.id ? 'active' : ''}" data-id="${c.id}">
+        <div><strong>${escapeHtml(c.buyerName)}</strong></div>
+        <div style="font-size:0.75rem; color:#6c7b8b;">Product: ${escapeHtml(c.productName)}</div>
+        <div style="font-size:0.7rem;">${c.lastMessage ? escapeHtml(c.lastMessage.substring(0,40)) : 'No messages'}</div>
+        ${c.unreadCount > 0 ? `<span style="background:#f97316; color:white; border-radius:40px; padding:2px 8px; font-size:0.65rem; margin-top:4px; display:inline-block;">${c.unreadCount} new</span>` : ''}
+      </div>
+    `).join('');
+    document.querySelectorAll('.conversation-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        activeConversationId = id;
+        openConversation(id);
+        refreshConversationsList();
+      });
+    });
+  }
+
+  async function openConversation(convId, scroll = true) {
+    const messages = await loadMessages(convId);
+    const conversation = conversations.find(c => c.id == convId);
+    if (!conversation) return;
+    const header = document.getElementById('chatHeader');
+    if (header) header.innerHTML = `<i class="fas fa-user"></i> ${escapeHtml(conversation.buyerName)} · Product: ${escapeHtml(conversation.productName)}`;
+    const messagesDiv = document.getElementById('chatMessages');
+    if (messagesDiv) {
+      messagesDiv.innerHTML = messages.map(msg => `
+        <div class="message-bubble ${msg.sender === 'seller' ? 'message-seller' : 'message-buyer'}">
+          ${escapeHtml(msg.message)}
+          <div style="font-size:0.6rem; opacity:0.7; margin-top:4px;">${new Date(msg.created_at).toLocaleTimeString()}</div>
+        </div>
+      `).join('');
+      if (scroll) messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    const inputArea = document.getElementById('chatInputArea');
+    if (inputArea) inputArea.style.display = 'flex';
+    const sendBtn = document.getElementById('sendMsgBtn');
+    const input = document.getElementById('messageInput');
+    const handler = withLoading(sendBtn, async () => {
       const text = input.value.trim();
       if (!text) return;
-      const messagesDiv = document.getElementById('chatMessages');
-      const sellerMsgDiv = document.createElement('div');
-      sellerMsgDiv.className = 'chat-message seller';
-      sellerMsgDiv.innerText = text;
-      messagesDiv.appendChild(sellerMsgDiv);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      await sendMessage(convId, text);
       input.value = '';
-      try {
-        await apiCall('/api/support/send', { method: 'POST', body: JSON.stringify({ message: text }) });
-        // simulate support reply (or fetch real)
-        setTimeout(async () => {
-          try {
-            const replyRes = await apiCall('/api/support/latest');
-            if (replyRes.data) {
-              const replyDiv = document.createElement('div');
-              replyDiv.className = 'chat-message support';
-              replyDiv.innerText = replyRes.data.reply || "Thanks for reaching out! We'll get back shortly.";
-              messagesDiv.appendChild(replyDiv);
-              messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            }
-          } catch(e) {
-            // mock fallback
-            const mockReply = document.createElement('div');
-            mockReply.className = 'chat-message support';
-            mockReply.innerText = "✅ Received! Support will respond soon.";
-            messagesDiv.appendChild(mockReply);
-          }
-        }, 800);
-      } catch(err) {
-        showToast("Message sent (offline mode)", false);
-        const fallback = document.createElement('div');
-        fallback.className = 'chat-message support';
-        fallback.innerText = "📨 We'll get back to you shortly.";
-        messagesDiv.appendChild(fallback);
-      }
+      await openConversation(convId);
     });
-    document.getElementById('chatForm').onsubmit = (e) => handler(e);
+    if (sendBtn) {
+      sendBtn.onclick = handler;
+      input.onkeypress = (e) => { if (e.key === 'Enter') handler(); };
+    }
   }
 
   async function renderSettings() {
@@ -619,12 +713,11 @@
     modal.innerHTML = `<div class="modal" style="background:transparent; box-shadow:none; text-align:center;"><img src="${url}" style="max-width:85vw; max-height:80vh; border-radius:24px;"><button style="position:absolute; top:20px; right:30px; background:white; border:none; font-size:28px; width:42px; border-radius:50px; cursor:pointer;">&times;</button></div>`;
     document.body.appendChild(modal); modal.onclick = (e) => { if(e.target === modal || e.target.tagName === 'BUTTON') modal.remove(); };
   }
-  window.openImagePreview = openImagePreview;
   function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
   async function switchPage(page) {
     document.querySelectorAll('.nav-link').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
-    const titles = { overview:'Dashboard', orders:'My Orders', transactions:'Transactions', sell:'Sell Product', 'my-products':'My Listings', chat:'Support Chat', settings:'Settings' };
+    const titles = { overview:'Dashboard', orders:'My Orders', transactions:'Transactions', sell:'Sell Product', 'my-products':'My Listings', messages:'Buyer Messages', settings:'Settings' };
     document.getElementById('pageTitle').innerText = titles[page];
     document.getElementById('breadcrumb').innerText = page;
     document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').style.display = 'none';
@@ -633,7 +726,7 @@
     else if (page === 'transactions') await renderTransactions();
     else if (page === 'sell') await renderSellPage();
     else if (page === 'my-products') await renderMyProducts();
-    else if (page === 'chat') await renderChat();
+    else if (page === 'messages') await renderMessagesPage();
     else if (page === 'settings') await renderSettings();
   }
 
