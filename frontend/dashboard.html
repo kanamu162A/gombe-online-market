@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Gombe Market · Instant Seller Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="preload" as="style">
+  <title>Gombe Market · Seller Hub | Real‑time Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
@@ -15,22 +14,21 @@
       -webkit-tap-highlight-color: transparent;
     }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: #f5f9ff;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f0f4f9;
       color: #0a2540;
       line-height: 1.4;
-      will-change: transform;
     }
-    /* super fast sticky announcement */
+    /* announcement bar - ultra light */
     .announcement-bar {
-      background: #0c2a38;
+      background: #0b2a36;
       color: white;
       padding: 10px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
       font-size: 0.85rem;
       font-weight: 500;
       border-bottom: 2px solid #f97316;
@@ -41,22 +39,24 @@
     }
     .announcement-content i { color: #f97316; margin-right: 8px; }
     .announcement-edit {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.12);
       border: none;
-      padding: 5px 16px;
-      border-radius: 30px;
+      padding: 5px 18px;
+      border-radius: 40px;
       color: #ffd7b5;
       cursor: pointer;
       font-size: 0.7rem;
+      font-weight: 500;
       transition: 0.1s;
     }
+    .announcement-edit:hover { background: #f97316; color: white; }
     /* dashboard layout */
     .dashboard { display: flex; min-height: calc(100vh - 50px); }
-    /* sidebar - instant transform */
+    /* sidebar premium */
     .sidebar {
       width: 280px;
-      background: linear-gradient(145deg, #0b2b3b, #041218);
-      color: #e0f0fa;
+      background: linear-gradient(145deg, #0c2f3b, #041a23);
+      color: #e3f0fa;
       position: fixed;
       top: 50px;
       bottom: 0;
@@ -66,161 +66,170 @@
       z-index: 1001;
       overflow-y: auto;
       will-change: transform;
+      box-shadow: 4px 0 25px rgba(0,0,0,0.1);
     }
     .sidebar.open { transform: translateX(0); }
     .sidebar-logo-area { padding: 28px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-logo { font-size: 1.6rem; font-weight: 800; background: linear-gradient(120deg, #f97316, #ffae70); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .sidebar-logo { font-size: 1.7rem; font-weight: 800; background: linear-gradient(120deg, #f97316, #ffb347); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .sidebar-user-area { padding: 24px; text-align: center; }
     .sidebar-avatar {
-      width: 68px; height: 68px; background: linear-gradient(145deg, #f97316, #c2410c);
+      width: 70px; height: 70px; background: linear-gradient(145deg, #f97316, #c2410c);
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 12px; font-size: 1.8rem; font-weight: 700; box-shadow: 0 8px 16px rgba(249,115,22,0.3);
+      margin: 0 auto 12px; font-size: 1.9rem; font-weight: 700; box-shadow: 0 10px 20px rgba(249,115,22,0.4);
+      border: 2px solid rgba(255,255,255,0.3);
     }
     .sidebar-nav { padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
     .nav-link {
       display: flex; align-items: center; gap: 14px; padding: 10px 16px;
       color: #cbdde9; cursor: pointer; border-radius: 14px; font-weight: 500;
       background: none; border: none; width: 100%; text-align: left;
-      transition: background 0.1s;
+      transition: 0.08s linear;
     }
     .nav-link:hover { background: rgba(249,115,22,0.2); color: white; }
-    .nav-link.active { background: rgba(249,115,22,0.25); color: #f97316; border-left: 3px solid #f97316; }
+    .nav-link.active { background: rgba(249,115,22,0.28); color: #f97316; border-left: 3px solid #f97316; }
     .nav-link i { width: 24px; }
     .badge { margin-left: auto; background: #f97316; color: white; font-size: 0.65rem; padding: 2px 8px; border-radius: 40px; }
     .logout-sidebar {
       display: flex; align-items: center; gap: 12px; padding: 12px 20px;
       color: #f87171; cursor: pointer; border-radius: 14px; width: 100%;
       background: none; border: none; margin-top: 20px;
+      font-weight: 500;
     }
-    /* main content - instant */
+    /* main content modern */
     .main-content {
-      flex: 1; margin-left: 0; padding: 24px 20px;
+      flex: 1; margin-left: 0; padding: 24px 24px;
       transition: margin 0.2s;
     }
     .top-bar {
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
-      border-radius: 28px;
-      padding: 12px 24px;
-      margin-bottom: 24px;
+      border-radius: 32px;
+      padding: 12px 28px;
+      margin-bottom: 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02), 0 0 0 1px #f0f2f5;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.02), 0 0 0 1px #eef2f8;
     }
     .menu-btn {
-      background: #fff0e6; border: none; width: 40px; height: 40px;
-      border-radius: 20px; cursor: pointer; color: #f97316;
-      margin-right: 16px;
+      background: #fff0e6; border: none; width: 44px; height: 44px;
+      border-radius: 24px; cursor: pointer; color: #f97316;
+      margin-right: 18px; font-size: 1.2rem;
     }
-    .page-title-area h1 { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #0f2b3d, #f97316); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .btn-logout { background: #fee9e6; border: none; padding: 8px 20px; border-radius: 40px; font-weight: 600; cursor: pointer; }
-    /* fast cards */
+    .page-title-area h1 { font-size: 1.7rem; font-weight: 800; background: linear-gradient(135deg, #0f2b3d, #f97316); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.3px; }
+    .btn-logout { background: #fee9e6; border: none; padding: 8px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.1s; }
+    /* cards modern */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 18px;
-      margin-bottom: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
     }
     .stat-card {
-      background: white; border-radius: 28px; padding: 20px 18px;
-      display: flex; align-items: center; gap: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02), 0 0 0 1px #edf2f7;
+      background: white; border-radius: 32px; padding: 20px 20px;
+      display: flex; align-items: center; gap: 18px;
+      box-shadow: 0 6px 12px -6px rgba(0,0,0,0.05), 0 0 0 1px #edf2f7;
+      transition: transform 0.1s;
     }
+    .stat-card:hover { transform: translateY(-2px); }
     .stat-icon {
-      width: 52px; height: 52px; background: #fff5ed;
-      border-radius: 22px; display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; color: #f97316;
+      width: 56px; height: 56px; background: #fff5ed;
+      border-radius: 24px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: #f97316;
     }
-    .stat-value { font-size: 1.9rem; font-weight: 800; line-height: 1.2; }
+    .stat-value { font-size: 2rem; font-weight: 800; line-height: 1.2; }
     .wallet-card {
-      background: linear-gradient(115deg, #f97316, #ea580c);
-      border-radius: 32px; padding: 22px 28px; margin-bottom: 28px;
+      background: linear-gradient(115deg, #f97316, #e65c0c, #b91c0c);
+      border-radius: 34px; padding: 24px 32px; margin-bottom: 28px;
       display: flex; flex-wrap: wrap; justify-content: space-between;
-      align-items: center; color: white;
-      box-shadow: 0 12px 24px -10px rgba(249,115,22,0.4);
+      align-items: center; color: white; box-shadow: 0 18px 30px -12px rgba(249,115,22,0.5);
     }
-    .wallet-balance { font-size: 2rem; font-weight: 800; }
+    .wallet-balance { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; }
+    .wallet-account { background: rgba(255,255,255,0.2); backdrop-filter: blur(6px); padding: 6px 16px; border-radius: 60px; display: inline-block; cursor: pointer; font-size: 0.8rem; margin-top: 8px; }
     .section-card {
-      background: white; border-radius: 32px; padding: 24px;
-      margin-bottom: 28px; border: 1px solid #ecf3f9;
+      background: white; border-radius: 34px; padding: 26px;
+      margin-bottom: 30px; border: 1px solid #ecf3f9; box-shadow: 0 6px 14px rgba(0,0,0,0.02);
     }
     .services-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 14px; margin-top: 12px;
+      gap: 16px; margin-top: 12px;
     }
     .service-card {
-      background: #fefaf7; border-radius: 24px; padding: 16px;
-      text-align: center; border: 1px solid #ffe4d4;
+      background: #fefaf7; border-radius: 28px; padding: 18px 12px;
+      text-align: center; border: 1px solid #ffe4d4; transition: 0.1s;
     }
     .list-item {
-      background: #ffffff; border-radius: 20px; padding: 14px 18px;
-      margin-bottom: 10px; display: flex; justify-content: space-between;
+      background: #ffffff; border-radius: 24px; padding: 14px 20px;
+      margin-bottom: 12px; display: flex; justify-content: space-between;
       align-items: center; flex-wrap: wrap; gap: 12px;
-      border: 1px solid #edf2f8;
+      border: 1px solid #edf2f8; transition: 0.08s;
     }
-    .status-badge { padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; }
+    .status-badge { padding: 5px 14px; border-radius: 40px; font-size: 0.7rem; font-weight: 600; }
     .status-pending { background: #fef3c7; color: #b45309; }
     .status-completed { background: #d1fae5; color: #065f46; }
+    .status-shipped { background: #dbeafe; color: #1e40af; }
     .btn-primary {
       background: #f97316; color: white; border: none;
-      padding: 10px 24px; border-radius: 40px; font-weight: 700;
-      cursor: pointer; transition: transform 0.05s;
+      padding: 10px 28px; border-radius: 44px; font-weight: 700;
+      cursor: pointer; transition: 0.05s linear; box-shadow: 0 2px 6px rgba(249,115,22,0.3);
     }
     .btn-primary:active { transform: scale(0.97); }
     .action-btn {
-      width: 36px; height: 36px; border-radius: 14px;
+      width: 38px; height: 38px; border-radius: 16px;
       background: #f8fafc; border: 1px solid #e2e8f0; cursor: pointer;
+      margin: 0 3px;
     }
     .modal-overlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(8px);
       z-index: 1200; align-items: center; justify-content: center;
     }
     .modal-overlay.show { display: flex; }
     .modal {
-      background: white; border-radius: 36px; padding: 28px;
-      max-width: 500px; width: 90%;
+      background: white; border-radius: 40px; padding: 32px;
+      max-width: 520px; width: 90%; max-height: 85vh; overflow-y: auto;
     }
-    .form-group { margin-bottom: 14px; }
-    .form-group label { font-weight: 600; display: block; margin-bottom: 6px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { font-weight: 600; display: block; margin-bottom: 6px; font-size: 0.85rem; }
     .form-group input, .form-group select, .form-group textarea {
-      width: 100%; padding: 12px 14px; border-radius: 20px;
-      border: 1.5px solid #e2edf2; font-family: inherit;
+      width: 100%; padding: 12px 16px; border-radius: 24px;
+      border: 1.5px solid #e2edf2; font-family: inherit; font-size: 0.9rem;
     }
     .toast-container {
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      z-index: 1300; pointer-events: none;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 1300; pointer-events: none; display: flex; flex-direction: column; align-items: center;
     }
     .toast {
-      background: #1f2a3e; color: white; padding: 10px 24px;
-      border-radius: 60px; margin-top: 6px; font-size: 0.85rem;
-      pointer-events: none; animation: fadeUp 0.15s ease;
+      background: #1f2a3e; color: white; padding: 10px 26px;
+      border-radius: 60px; margin-top: 8px; font-size: 0.85rem;
+      pointer-events: none; animation: fadeUp 0.12s ease;
     }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    .spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; display: inline-block; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
     @media (min-width: 1024px) {
       .sidebar { transform: translateX(0); position: sticky; top: 50px; }
       .main-content { margin-left: 280px; }
       .menu-btn { display: none; }
     }
-    .empty-state { text-align: center; padding: 32px; color: #6b7280; }
     .list-item-thumb {
-      width: 48px; height: 48px; border-radius: 14px;
+      width: 50px; height: 50px; border-radius: 16px;
       background: #f1f5f9; display: flex; align-items: center;
-      justify-content: center; cursor: pointer;
+      justify-content: center; cursor: pointer; overflow: hidden;
     }
-    img { max-width: 100%; border-radius: 12px; }
-    .condition-badge { background: #f0f0f0; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; }
+    .list-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .loading-skeleton { background: #eef2f6; border-radius: 20px; height: 70px; margin-bottom: 12px; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
   </style>
 </head>
 <body>
 
 <div class="announcement-bar">
-  <div class="announcement-content"><i class="fas fa-bullhorn"></i><span id="announcementText">⚡ Gombe Market — Sell faster, earn more</span></div>
-  <button class="announcement-edit" id="editAnnouncementBtn"><i class="fas fa-pen"></i> Edit</button>
+  <div class="announcement-content"><i class="fas fa-bullhorn"></i><span id="announcementText">Loading announcement...</span></div>
+  <button class="announcement-edit" id="editAnnouncementBtn"><i class="fas fa-pen"></i> Admin edit</button>
 </div>
 
 <div class="dashboard">
@@ -232,8 +241,8 @@
       <button class="nav-link active" data-page="overview"><i class="fas fa-chart-line"></i> Dashboard</button>
       <button class="nav-link" data-page="orders"><i class="fas fa-shopping-bag"></i> Orders <span class="badge" id="pendingBadge">0</span></button>
       <button class="nav-link" data-page="transactions"><i class="fas fa-exchange-alt"></i> Transactions</button>
-      <button class="nav-link" data-page="sell"><i class="fas fa-plus-circle"></i> Sell</button>
-      <button class="nav-link" data-page="my-products"><i class="fas fa-store"></i> My Items</button>
+      <button class="nav-link" data-page="sell"><i class="fas fa-plus-circle"></i> Sell Product</button>
+      <button class="nav-link" data-page="my-products"><i class="fas fa-store"></i> My Listings</button>
       <button class="nav-link" data-page="kyc"><i class="fas fa-id-card"></i> KYC</button>
       <button class="nav-link" data-page="settings"><i class="fas fa-sliders-h"></i> Settings</button>
     </nav>
@@ -245,163 +254,197 @@
       <div style="display: flex; align-items: center;"><button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button><div class="page-title-area"><h1 id="pageTitle">Dashboard</h1><div style="font-size: 0.7rem; color:#6c7b8b;" id="breadcrumb">overview</div></div></div>
       <button class="btn-logout" id="logoutBtn"><i class="fas fa-power-off"></i> Exit</button>
     </div>
-    <div id="pageContainer"><div class="section-card" style="text-align:center;">🚀 Loading instant dashboard...</div></div>
+    <div id="pageContainer"><div class="section-card" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Loading real data...</div></div>
   </main>
 </div>
 
-<!-- Edit Product Modal -->
-<div class="modal-overlay" id="editModalOverlay"><div class="modal"><h3>✏️ Edit product</h3><form id="editProductForm"><input type="hidden" id="editProductId"><div class="form-group"><label>Name</label><input id="editProductName" required></div><div class="form-group"><label>Price (₦)</label><input type="number" id="editProductPrice" required></div><div class="form-group"><label>Stock</label><input type="number" id="editProductStock"></div><div class="form-group"><label>Category</label><input id="editProductCategory"></div><div class="form-group"><label>Condition</label><select id="editProductCondition"><option>new</option><option>used</option></select></div><div class="form-group"><label>Status</label><select id="editProductStatus"><option>available</option><option>sold</option></select></div><div class="form-group"><label>Description</label><textarea id="editProductDesc" rows="2"></textarea></div><div class="form-group"><label>New image</label><input type="file" id="editProductImageFile" accept="image/*"></div><div id="editImagePreview"></div><div style="display:flex; gap:12px; justify-content:flex-end; margin-top:20px;"><button type="button" class="btn-logout" onclick="closeEditModal()">Cancel</button><button type="submit" class="btn-primary">Update</button></div></form></div></div>
+<!-- edit product modal -->
+<div class="modal-overlay" id="editModalOverlay"><div class="modal"><h3>✏️ Edit product</h3><form id="editProductForm"><input type="hidden" id="editProductId"><div class="form-group"><label>Product name</label><input id="editProductName" required></div><div class="form-group"><label>Price (₦)</label><input type="number" id="editProductPrice" required></div><div class="form-group"><label>Stock</label><input type="number" id="editProductStock"></div><div class="form-group"><label>Category</label><input id="editProductCategory"></div><div class="form-group"><label>Condition</label><select id="editProductCondition"><option>new</option><option>used</option></select></div><div class="form-group"><label>Status</label><select id="editProductStatus"><option>available</option><option>sold</option></select></div><div class="form-group"><label>Description</label><textarea id="editProductDesc" rows="2"></textarea></div><div class="form-group"><label>New image (optional)</label><input type="file" id="editProductImageFile" accept="image/*"></div><div id="editImagePreview" style="margin-bottom:10px;"></div><div style="display:flex; gap:12px; justify-content:flex-end;"><button type="button" class="btn-logout" onclick="closeEditModal()">Cancel</button><button type="submit" class="btn-primary">Update</button></div></form></div></div>
 
-<!-- Announcement Modal -->
-<div class="modal-overlay" id="announcementModal"><div class="modal"><h3>📢 Update announcement</h3><textarea id="newAnnouncementText" rows="3" style="width:100%; margin:20px 0;"></textarea><div style="display:flex; gap:12px;"><button class="btn-logout" onclick="closeAnnouncementModal()">Cancel</button><button class="btn-primary" id="saveAnnouncementBtn">Save</button></div></div></div>
+<!-- announcement modal -->
+<div class="modal-overlay" id="announcementModal"><div class="modal"><h3>📢 Update global announcement</h3><textarea id="newAnnouncementText" rows="3" style="width:100%; margin:20px 0;"></textarea><div style="display:flex; gap:12px;"><button class="btn-logout" onclick="closeAnnouncementModal()">Cancel</button><button class="btn-primary" id="saveAnnouncementBtn">Save</button></div></div></div>
 
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-  // ========== ULTRA-FAST IN-MEMORY CACHE + LOCAL STORAGE MOCK (0ms responses) ==========
-  // Real API endpoints are ready, but we serve instant cached data first, sync in background.
-  let store = {
-    user: { name: "Amina Bello", email: "seller@gombemarket.com", walletBalance: 245000, accountNumber: "0123456789" },
-    stats: { totalOrders: 48, totalSpent: 892000, pendingOrders: 6, completedOrders: 42 },
-    recentOrders: [
-      { order_number: "GM-1001", created_at: new Date().toISOString(), status: "pending", total_amount: 12500 },
-      { order_number: "GM-1002", created_at: new Date(Date.now() - 86400000).toISOString(), status: "completed", total_amount: 32000 }
-    ],
-    orders: [
-      { order_number: "GM-1001", created_at: new Date().toISOString(), status: "pending", total_amount: 12500 },
-      { order_number: "GM-1002", created_at: new Date(Date.now() - 86400000).toISOString(), status: "completed", total_amount: 32000 }
-    ],
-    transactions: [
-      { description: "Sale #GM-1002", date: new Date().toISOString(), type: "credit", amount: 32000 },
-      { description: "Wallet funding", date: new Date().toISOString(), type: "credit", amount: 50000 }
-    ],
-    products: [
-      { id: "p1", name: "Premium Phone Case", price: 4500, stock: 20, category: "Accessories", condition: "new", sold: false, description: "Durable silicone", images: [] },
-      { id: "p2", name: "Wireless Mouse", price: 8900, stock: 5, category: "Electronics", condition: "new", sold: false, description: "Ergonomic", images: [] }
-    ]
-  };
-  
-  // load from localStorage if exists (fast sync)
-  try {
-    const saved = localStorage.getItem("gombe_instant_store");
-    if(saved) { const parsed = JSON.parse(saved); store = { ...store, ...parsed }; }
-  } catch(e) {}
-  function persistStore() { localStorage.setItem("gombe_instant_store", JSON.stringify({ user:store.user, stats:store.stats, orders:store.orders, transactions:store.transactions, products:store.products })); }
-  
-  // Helper: show toast instantly
-  function showToast(msg, type='success') { 
-    const toastDiv = document.createElement('div'); toastDiv.className = `toast ${type}`; toastDiv.innerText = msg;
-    document.getElementById('toastContainer').appendChild(toastDiv);
-    setTimeout(() => toastDiv.remove(), 2200);
+  // ---------- REAL API INTEGRATION ----------
+  const BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:4040' : 'https://gombe-online-market.onrender.com';
+  let token = localStorage.getItem('token');
+  if (!token) {
+    alert("Session expired. Please login again.");
+    window.location.href = 'login.html';
   }
-  function formatCurrency(amt) { return '₦' + Number(amt).toLocaleString('en-NG'); }
-  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
-  
-  // announcement
-  let currentAnnounce = localStorage.getItem("announce_text") || "🚀 Gombe Market — Zero commission for first 100 sellers!";
-  document.getElementById('announcementText').innerText = currentAnnounce;
-  function updateAnnouncementUI(text) { currentAnnounce = text; localStorage.setItem("announce_text", text); document.getElementById('announcementText').innerText = text; showToast("Announcement updated"); }
-  document.getElementById('editAnnouncementBtn').onclick = () => { document.getElementById('newAnnouncementText').value = currentAnnounce; document.getElementById('announcementModal').classList.add('show'); };
-  document.getElementById('saveAnnouncementBtn').onclick = () => { const newTxt = document.getElementById('newAnnouncementText').value.trim(); if(newTxt) updateAnnouncementUI(newTxt); closeAnnouncementModal(); };
-  function closeAnnouncementModal() { document.getElementById('announcementModal').classList.remove('show'); }
-  
-  // fast image preview
-  function openImagePreview(url) { if(url) { let modal = document.createElement('div'); modal.className = 'modal-overlay show'; modal.style.display='flex'; modal.innerHTML = `<div class="modal" style="background:transparent; box-shadow:none; text-align:center;"><img src="${url}" style="max-width:85vw; max-height:80vh; border-radius:24px;"><button style="position:absolute; top:20px; right:30px; background:white; border:none; font-size:30px; cursor:pointer;">&times;</button></div>`; document.body.appendChild(modal); modal.onclick = (e) => { if(e.target === modal || e.target.tagName==='BUTTON') modal.remove(); }; } }
-  window.openImagePreview = openImagePreview;
-  
-  // UI helpers
-  function showPanel(panelId) { document.querySelectorAll('.form-panel')?.forEach(p => p.classList.remove('active')); if(document.getElementById(panelId)) document.getElementById(panelId).classList.add('active'); }
-  function switchPage(page) {
-    document.querySelectorAll('.nav-link').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
-    const titles = { overview:'Dashboard', orders:'My Orders', transactions:'Transactions', sell:'Sell Product', 'my-products':'My Listings', kyc:'KYC', settings:'Settings' };
-    document.getElementById('pageTitle').innerText = titles[page];
-    document.getElementById('breadcrumb').innerText = page;
-    document.getElementById('sidebar')?.classList.remove('open');
-    document.getElementById('sidebarOverlay')?.style.setProperty('display','none');
-    if(page === 'overview') renderOverview();
-    else if(page === 'orders') renderOrders();
-    else if(page === 'transactions') renderTransactions();
-    else if(page === 'sell') renderSellPage();
-    else if(page === 'my-products') renderMyProducts();
-    else if(page === 'kyc') renderKYC();
-    else if(page === 'settings') renderSettings();
+
+  function showToast(msg, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerText = msg;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 2800);
   }
-  
-  function renderOverview() {
+
+  async function apiCall(endpoint, options = {}) {
+    const url = `${BASE_URL}${endpoint}`;
+    const headers = { 'Authorization': `Bearer ${token}` };
+    if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
+    const res = await fetch(url, { ...options, headers });
+    if (!res.ok) {
+      let errMsg = `Request failed (${res.status})`;
+      try { const err = await res.json(); errMsg = err.message || errMsg; } catch(e) {}
+      if (res.status === 401) { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+      throw new Error(errMsg);
+    }
+    return res.json();
+  }
+
+  // ---------- GLOBAL STATE ----------
+  let currentAnnouncement = "";
+  let userInfo = { name: "Seller", walletBalance: 0, accountNumber: "" };
+  let productsCache = [];
+
+  // load announcement
+  async function loadAnnouncement() {
+    try {
+      const res = await fetch(`${BASE_URL}/api/announcements/active`, { headers: { 'Authorization': `Bearer ${token}` } });
+      if (res.ok) { const data = await res.json(); currentAnnouncement = data.message || "🔥 Gombe Market — Trusted by thousands"; }
+      else currentAnnouncement = "🚀 Gombe Online Market — Sell & grow with us";
+    } catch(e) { currentAnnouncement = "🚀 Gombe Online Market — Empowering sellers"; }
+    document.getElementById('announcementText').innerText = currentAnnouncement;
+  }
+
+  async function updateAnnouncement(text) {
+    try {
+      await apiCall('/api/announcements/update', { method: 'POST', body: JSON.stringify({ message: text }) });
+      currentAnnouncement = text;
+      document.getElementById('announcementText').innerText = text;
+      showToast('Announcement updated', 'success');
+    } catch(err) { showToast(err.message, 'error'); }
+  }
+
+  // dashboard stats
+  async function loadDashboardStats() {
+    try {
+      const res = await apiCall('/api/dashboard/stats');
+      const data = res.data;
+      userInfo.name = data.user?.name || "Seller";
+      userInfo.walletBalance = data.user?.walletBalance || 0;
+      userInfo.accountNumber = data.user?.accountNumber || "N/A";
+      document.getElementById('sidebarUserName').innerText = userInfo.name;
+      document.getElementById('userAvatarLarge').innerText = userInfo.name.charAt(0).toUpperCase();
+      document.getElementById('pendingBadge').innerText = data.stats?.pendingOrders || 0;
+      return data;
+    } catch(err) { showToast(err.message, 'error'); return null; }
+  }
+
+  // render overview
+  async function renderOverview() {
     const container = document.getElementById('pageContainer');
+    container.innerHTML = `<div class="section-card" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Fetching dashboard...</div>`;
+    const statsData = await loadDashboardStats();
+    if (!statsData) return;
+    const { stats, user, recentOrders } = statsData;
     container.innerHTML = `
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-shopping-cart"></i></div><div><div class="stat-value">${store.stats.totalOrders}</div><div>Total Orders</div></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-wallet"></i></div><div><div class="stat-value">${formatCurrency(store.stats.totalSpent)}</div><div>Total Spent</div></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div><div class="stat-value">${store.stats.pendingOrders}</div><div>Pending</div></div></div>
-        <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-double"></i></div><div><div class="stat-value">${store.stats.completedOrders}</div><div>Completed</div></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-shopping-cart"></i></div><div><div class="stat-value">${stats.totalOrders ?? 0}</div><div>Total Orders</div></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-wallet"></i></div><div><div class="stat-value">₦${(stats.totalSpent ?? 0).toLocaleString()}</div><div>Total Spent</div></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div><div class="stat-value">${stats.pendingOrders ?? 0}</div><div>Pending</div></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-double"></i></div><div><div class="stat-value">${stats.completedOrders ?? 0}</div><div>Completed</div></div></div>
       </div>
       <div class="wallet-card">
-        <div><div>💰 Wallet Balance</div><div class="wallet-balance">${formatCurrency(store.user.walletBalance)}</div><div class="wallet-account" style="cursor:pointer; margin-top:8px;" id="copyAccountBtn"><span>${store.user.accountNumber}</span> <i class="fas fa-copy"></i></div></div>
-        <button class="btn-primary" id="fundWalletBtn">+ Fund</button>
+        <div><div>💰 Wallet Balance</div><div class="wallet-balance">₦${(user.walletBalance || 0).toLocaleString()}</div><div class="wallet-account" id="copyAccountBtn"><span>${user.accountNumber || 'N/A'}</span> <i class="fas fa-copy"></i></div></div>
+        <button class="btn-primary" id="fundWalletBtn">+ Fund Wallet</button>
       </div>
-      <div class="section-card"><div class="section-header" style="display:flex; justify-content:space-between;"><h3>🌟 Instant Services</h3></div><div class="services-grid"><div class="service-card"><i class="fas fa-id-card"></i><h4>NIN Verify</h4></div><div class="service-card"><i class="fas fa-mobile-alt"></i><h4>NIN+Phone</h4></div><div class="service-card"><i class="fas fa-chart-simple"></i><h4>CAC Filing</h4></div><div class="service-card"><i class="fas fa-building"></i><h4>SCUML</h4></div></div></div>
-      <div class="section-card"><div class="section-header" style="display:flex; justify-content:space-between;"><h3>📦 Recent orders</h3><button class="btn-primary" id="viewAllOrdersBtn" style="padding:6px 16px;">View all</button></div><div id="recentOrdersList"></div></div>
+      <div class="section-card"><div class="section-header" style="display:flex; justify-content:space-between;"><h3>🌟 Premium Services</h3></div><div class="services-grid"><div class="service-card"><i class="fas fa-id-card"></i><h4>NIN Verification</h4></div><div class="service-card"><i class="fas fa-mobile-alt"></i><h4>NIN+Phone</h4></div><div class="service-card"><i class="fas fa-chart-simple"></i><h4>CAC Filing</h4></div><div class="service-card"><i class="fas fa-building"></i><h4>SCUML</h4></div></div></div>
+      <div class="section-card"><div class="section-header" style="display:flex; justify-content:space-between;"><h3>📦 Recent orders</h3><button class="btn-primary" id="viewAllOrdersBtn" style="padding:6px 18px;">View all</button></div><div id="recentOrdersList"></div></div>
     `;
     const recentDiv = document.getElementById('recentOrdersList');
-    if(store.recentOrders.length) recentDiv.innerHTML = store.recentOrders.map(o => `<div class="list-item"><div><strong>${o.order_number}</strong><br><small>${new Date(o.created_at).toLocaleDateString()}</small></div><span class="status-badge status-${o.status}">${o.status}</span><strong>${formatCurrency(o.total_amount)}</strong></div>`).join('');
+    if (recentOrders?.length) recentDiv.innerHTML = recentOrders.map(o => `<div class="list-item"><div><strong>${o.order_number}</strong><br><small>${new Date(o.created_at).toLocaleDateString()}</small></div><span class="status-badge status-${o.status}">${o.status}</span><strong>₦${(o.total_amount).toLocaleString()}</strong></div>`).join('');
     else recentDiv.innerHTML = '<div class="empty-state">✨ No recent orders</div>';
-    document.getElementById('copyAccountBtn')?.addEventListener('click', () => { navigator.clipboard.writeText(store.user.accountNumber); showToast("Account number copied"); });
-    document.getElementById('fundWalletBtn')?.addEventListener('click', () => { let amt = prompt("Amount (₦)"); if(amt && !isNaN(amt)) { store.user.walletBalance += Number(amt); showToast(`Added ${formatCurrency(amt)}`); renderOverview(); persistStore(); } });
+    document.getElementById('copyAccountBtn')?.addEventListener('click', () => { navigator.clipboard.writeText(user.accountNumber || ''); showToast("Account copied"); });
+    document.getElementById('fundWalletBtn')?.addEventListener('click', async () => {
+      let amount = prompt("Enter amount (₦)", "1000");
+      if (amount && !isNaN(amount)) {
+        try { await apiCall('/api/wallet/deposit', { method: 'POST', body: JSON.stringify({ amount: Number(amount) }) }); showToast(`Wallet funded with ₦${amount}`); renderOverview(); } 
+        catch(e) { showToast(e.message, 'error'); }
+      }
+    });
     document.getElementById('viewAllOrdersBtn')?.addEventListener('click', () => switchPage('orders'));
-    document.getElementById('sidebarUserName').innerText = store.user.name;
-    document.getElementById('userAvatarLarge').innerText = store.user.name.charAt(0).toUpperCase();
-    document.getElementById('pendingBadge').innerText = store.stats.pendingOrders;
   }
-  
-  function renderOrders() {
+
+  async function renderOrders() {
     const container = document.getElementById('pageContainer');
-    container.innerHTML = `<div class="section-card"><h3>📋 All orders</h3><div id="ordersFullList"></div></div>`;
-    const ordersDiv = document.getElementById('ordersFullList');
-    if(store.orders.length) ordersDiv.innerHTML = store.orders.map(o => `<div class="list-item"><div><strong>#${o.order_number}</strong><div><small>${new Date(o.created_at).toLocaleString()}</small></div></div><span class="status-badge status-${o.status}">${o.status}</span><strong>${formatCurrency(o.total_amount)}</strong></div>`).join('');
-    else ordersDiv.innerHTML = '<div class="empty-state">No orders yet</div>';
+    container.innerHTML = `<div class="section-card"><h3>📋 All orders</h3><div id="ordersFullList"><div class="loading-skeleton"></div></div></div>`;
+    try {
+      const res = await apiCall('/api/orders/seller');
+      const orders = res.data || [];
+      const listDiv = document.getElementById('ordersFullList');
+      if (orders.length) listDiv.innerHTML = orders.map(o => `<div class="list-item"><div><strong>#${o.order_number}</strong><div><small>${new Date(o.created_at).toLocaleString()}</small></div></div><span class="status-badge status-${o.status}">${o.status}</span><strong>₦${(o.total_amount).toLocaleString()}</strong></div>`).join('');
+      else listDiv.innerHTML = '<div class="empty-state">No orders yet</div>';
+    } catch(e) { showToast(e.message, 'error'); document.getElementById('ordersFullList').innerHTML = '<div class="empty-state">Failed to load orders</div>'; }
   }
-  
-  function renderTransactions() {
+
+  async function renderTransactions() {
     const container = document.getElementById('pageContainer');
-    container.innerHTML = `<div class="section-card"><h3>💰 Transaction history</h3><div id="txList"></div></div>`;
-    const txDiv = document.getElementById('txList');
-    if(store.transactions.length) txDiv.innerHTML = store.transactions.map(t => `<div class="list-item"><div><strong>${t.description}</strong><br><small>${new Date(t.date).toLocaleDateString()}</small></div><span style="color:${t.type==='credit'?'#15803d':'#b91c1c'}">${t.type==='credit'?'+':'-'} ${formatCurrency(t.amount)}</span></div>`).join('');
-    else txDiv.innerHTML = '<div class="empty-state">No transactions</div>';
+    container.innerHTML = `<div class="section-card"><h3>💰 Transaction history</h3><div id="txList"><div class="loading-skeleton"></div></div></div>`;
+    try {
+      const res = await apiCall('/api/transactions');
+      const txns = res.data || [];
+      const listDiv = document.getElementById('txList');
+      if (txns.length) listDiv.innerHTML = txns.map(t => `<div class="list-item"><div><strong>${t.description}</strong><br><small>${new Date(t.date).toLocaleDateString()}</small></div><span style="color:${t.type==='credit'?'#15803d':'#b91c1c'}">${t.type==='credit'?'+':'-'} ₦${(t.amount).toLocaleString()}</span></div>`).join('');
+      else listDiv.innerHTML = '<div class="empty-state">No transactions</div>';
+    } catch(e) { showToast(e.message, 'error'); }
   }
-  
-  function renderSellPage() {
+
+  async function renderSellPage() {
     const container = document.getElementById('pageContainer');
-    container.innerHTML = `<div class="section-card"><h3>🛍️ Add product (instant)</h3><form id="createProductForm"><div class="form-group"><label>Name *</label><input id="prodName" required></div><div class="form-group"><label>Price (₦) *</label><input type="number" id="prodPrice" required></div><div class="form-group"><label>Stock</label><input id="prodStock" value="1"></div><div class="form-group"><label>Category</label><input id="prodCategory"></div><div class="form-group"><label>Condition</label><select id="prodCondition"><option>new</option><option>used</option></select></div><div class="form-group"><label>Description</label><textarea id="prodDesc" rows="2"></textarea></div><div class="form-group"><label>Image (optional)</label><input type="file" id="prodImage" accept="image/*"></div><button type="submit" class="btn-primary">Publish now</button></form></div>`;
-    document.getElementById('createProductForm').onsubmit = async (e) => {
+    container.innerHTML = `<div class="section-card"><h3>🛍️ Add new product</h3><form id="createProductForm"><div class="form-group"><label>Product name *</label><input id="prodName" required></div><div class="form-group"><label>Price (₦) *</label><input type="number" id="prodPrice" required></div><div class="form-group"><label>Stock</label><input id="prodStock" value="1"></div><div class="form-group"><label>Category</label><input id="prodCategory"></div><div class="form-group"><label>Condition</label><select id="prodCondition"><option>new</option><option>used</option></select></div><div class="form-group"><label>Description</label><textarea id="prodDesc" rows="3"></textarea></div><div class="form-group"><label>Product image</label><input type="file" id="prodImage" accept="image/*"></div><button type="submit" class="btn-primary">Publish product</button></form></div>`;
+    document.getElementById('createProductForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const newId = 'p' + Date.now();
-      const newProd = { id: newId, name: document.getElementById('prodName').value, price: Number(document.getElementById('prodPrice').value), stock: Number(document.getElementById('prodStock').value), category: document.getElementById('prodCategory').value, condition: document.getElementById('prodCondition').value, sold: false, description: document.getElementById('prodDesc').value, images: [] };
-      store.products.unshift(newProd);
-      persistStore();
-      showToast(`✅ "${newProd.name}" added`);
-      switchPage('my-products');
-    };
+      const formData = new FormData();
+      formData.append('name', document.getElementById('prodName').value);
+      formData.append('price', document.getElementById('prodPrice').value);
+      formData.append('stock', document.getElementById('prodStock').value);
+      formData.append('category', document.getElementById('prodCategory').value);
+      formData.append('condition', document.getElementById('prodCondition').value);
+      formData.append('description', document.getElementById('prodDesc').value);
+      const imgFile = document.getElementById('prodImage').files[0];
+      if (imgFile) formData.append('images', imgFile);
+      try {
+        await apiCall('/api/products', { method: 'POST', body: formData });
+        showToast('✅ Product created!');
+        switchPage('my-products');
+      } catch(err) { showToast(err.message, 'error'); }
+    });
   }
-  
-  function renderMyProducts() {
+
+  async function loadProducts() {
+    const res = await apiCall('/api/products/my');
+    productsCache = res.data || [];
+    return productsCache;
+  }
+
+  async function renderMyProducts() {
     const container = document.getElementById('pageContainer');
-    container.innerHTML = `<div class="section-card"><div style="display:flex; justify-content:space-between;"><h3>📦 My listings</h3><button class="btn-primary" id="newProductBtn">+ New</button></div><div id="myProductsList"></div></div>`;
+    container.innerHTML = `<div class="section-card"><div style="display:flex; justify-content:space-between;"><h3>📦 My listings</h3><button class="btn-primary" id="newProductBtn">+ New Product</button></div><div id="myProductsList"><div class="loading-skeleton"></div></div></div>`;
     document.getElementById('newProductBtn').onclick = () => switchPage('sell');
-    const listDiv = document.getElementById('myProductsList');
-    if(!store.products.length) { listDiv.innerHTML = '<div class="empty-state">No products yet. Start selling.</div>'; return; }
-    listDiv.innerHTML = store.products.map(p => {
-      const imgUrl = p.images?.[0] || '';
-      const thumbHtml = imgUrl ? `<div class="list-item-thumb" onclick="openImagePreview('${imgUrl}')"><img src="${imgUrl}" width="40" height="40" style="object-fit:cover;"></div>` : `<div class="list-item-thumb"><i class="fas fa-box"></i></div>`;
-      return `<div class="list-item" data-id="${p.id}"><div style="display:flex; gap:12px; align-items:center;">${thumbHtml}<div><strong>${escapeHtml(p.name)}</strong><br><small>${p.category||'General'} · Stock: ${p.stock}</small><div><span class="condition-badge">${p.condition}</span> ${p.sold ? '<span style="background:#fee2e2;padding:2px 10px;border-radius:20px;">Sold</span>' : ''}</div></div></div><strong>${formatCurrency(p.price)}</strong><div><button class="action-btn edit-product" data-id="${p.id}"><i class="fas fa-pen"></i></button> <button class="action-btn delete-product" data-id="${p.id}"><i class="fas fa-trash"></i></button></div></div>`;
-    }).join('');
-    document.querySelectorAll('.edit-product').forEach(btn => btn.onclick = (e) => { const id = btn.dataset.id; openEditModal(id); });
-    document.querySelectorAll('.delete-product').forEach(btn => btn.onclick = (e) => { if(confirm('Delete permanently?')) { store.products = store.products.filter(p => p.id != btn.dataset.id); persistStore(); renderMyProducts(); showToast("Deleted"); } });
+    try {
+      const products = await loadProducts();
+      const listDiv = document.getElementById('myProductsList');
+      if (!products.length) { listDiv.innerHTML = '<div class="empty-state">No products yet. Start selling.</div>'; return; }
+      listDiv.innerHTML = products.map(p => {
+        const imgUrl = p.images?.[0]?.url || (p.images?.[0] || '');
+        const thumbHtml = imgUrl ? `<div class="list-item-thumb" onclick="openImagePreview('${imgUrl}')"><img src="${imgUrl}" alt="product" style="width:100%;height:100%;object-fit:cover;"></div>` : `<div class="list-item-thumb"><i class="fas fa-box"></i></div>`;
+        return `<div class="list-item" data-id="${p.id}"><div style="display:flex; gap:14px; align-items:center;">${thumbHtml}<div><strong>${escapeHtml(p.name)}</strong><br><small>${p.category||'General'} · Stock: ${p.stock}</small><div><span class="condition-badge" style="background:#f0f0f0;padding:2px 12px;border-radius:20px;">${p.condition||'new'}</span> ${p.sold ? '<span style="background:#fee2e2;margin-left:6px;padding:2px 10px;border-radius:20px;">Sold</span>' : ''}</div></div></div><strong>₦${(p.price).toLocaleString()}</strong><div><button class="action-btn edit-product" data-id="${p.id}"><i class="fas fa-pen"></i></button> <button class="action-btn delete-product" data-id="${p.id}"><i class="fas fa-trash"></i></button></div></div>`;
+      }).join('');
+      document.querySelectorAll('.edit-product').forEach(btn => btn.onclick = () => openEditModal(btn.dataset.id));
+      document.querySelectorAll('.delete-product').forEach(btn => btn.onclick = async () => { if(confirm('Delete product?')) { try { await apiCall(`/api/products/${btn.dataset.id}`, { method: 'DELETE' }); showToast('Deleted'); renderMyProducts(); } catch(e) { showToast(e.message,'error'); } } });
+    } catch(e) { showToast(e.message,'error'); document.getElementById('myProductsList').innerHTML = '<div class="empty-state">Failed to load products</div>'; }
   }
-  
+
   function openEditModal(id) {
-    const p = store.products.find(x => x.id == id);
-    if(!p) return;
+    const p = productsCache.find(x => x.id == id);
+    if (!p) return;
     document.getElementById('editProductId').value = p.id;
     document.getElementById('editProductName').value = p.name;
     document.getElementById('editProductPrice').value = p.price;
@@ -410,44 +453,89 @@
     document.getElementById('editProductCondition').value = p.condition || 'new';
     document.getElementById('editProductStatus').value = p.sold ? 'sold' : 'available';
     document.getElementById('editProductDesc').value = p.description || '';
-    document.getElementById('editImagePreview').innerHTML = p.images?.[0] ? `<img src="${p.images[0]}" style="width:60px; border-radius:10px;">` : '';
+    document.getElementById('editImagePreview').innerHTML = p.images?.[0]?.url ? `<img src="${p.images[0].url}" style="width:70px; border-radius:12px;">` : '';
     document.getElementById('editModalOverlay').classList.add('show');
   }
   window.closeEditModal = () => { document.getElementById('editModalOverlay').classList.remove('show'); };
-  document.getElementById('editProductForm').addEventListener('submit', (e) => {
+  document.getElementById('editProductForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const id = document.getElementById('editProductId').value;
-    const prodIndex = store.products.findIndex(p => p.id == id);
-    if(prodIndex !== -1) {
-      store.products[prodIndex] = {
-        ...store.products[prodIndex],
-        name: document.getElementById('editProductName').value,
-        price: Number(document.getElementById('editProductPrice').value),
-        stock: Number(document.getElementById('editProductStock').value),
-        category: document.getElementById('editProductCategory').value,
-        condition: document.getElementById('editProductCondition').value,
-        sold: document.getElementById('editProductStatus').value === 'sold',
-        description: document.getElementById('editProductDesc').value,
-      };
-      const file = document.getElementById('editProductImageFile').files[0];
-      if(file) { const reader = new FileReader(); reader.onload = (ev) => { store.products[prodIndex].images = [ev.target.result]; persistStore(); renderMyProducts(); }; reader.readAsDataURL(file); }
-      else { persistStore(); renderMyProducts(); }
-    }
-    closeEditModal();
-    showToast("Updated");
+    const formData = new FormData();
+    formData.append('name', document.getElementById('editProductName').value);
+    formData.append('price', document.getElementById('editProductPrice').value);
+    formData.append('stock', document.getElementById('editProductStock').value);
+    formData.append('category', document.getElementById('editProductCategory').value);
+    formData.append('condition', document.getElementById('editProductCondition').value);
+    formData.append('sold', document.getElementById('editProductStatus').value === 'sold');
+    formData.append('description', document.getElementById('editProductDesc').value);
+    const newImg = document.getElementById('editProductImageFile').files[0];
+    if (newImg) { formData.append('replaceImages', 'true'); formData.append('images', newImg); }
+    try {
+      await apiCall(`/api/products/${id}`, { method: 'PUT', body: formData });
+      showToast('Product updated');
+      closeEditModal();
+      renderMyProducts();
+    } catch(err) { showToast(err.message, 'error'); }
   });
-  
-  function renderKYC() { document.getElementById('pageContainer').innerHTML = `<div class="section-card"><h3>📄 KYC Verification</h3><p>Upload valid ID to unlock premium features.</p><button class="btn-primary" id="kycUploadBtn">Upload now</button></div>`; document.getElementById('kycUploadBtn')?.addEventListener('click',()=>showToast("KYC submitted (demo)")); }
-  function renderSettings() { document.getElementById('pageContainer').innerHTML = `<div class="section-card"><h3>⚙️ Preferences</h3><label>Display name</label><input id="setName" class="form-group" value="${store.user.name}"><button class="btn-primary" id="saveSettingsBtn">Save</button></div>`; document.getElementById('saveSettingsBtn')?.addEventListener('click',()=>{ store.user.name = document.getElementById('setName').value; persistStore(); document.getElementById('sidebarUserName').innerText = store.user.name; showToast("Saved"); }); }
-  
-  // Events & UI
+
+  async function renderKYC() {
+    const container = document.getElementById('pageContainer');
+    container.innerHTML = `<div class="section-card"><h3>📄 KYC Verification</h3><p>Upload government ID for verification.</p><form id="kycForm"><div class="form-group"><label>ID type</label><select id="kycType"><option>National ID</option><option>Passport</option><option>Driver License</option></select></div><div class="form-group"><label>ID Number</label><input id="kycNumber" required></div><div class="form-group"><label>Upload front side</label><input type="file" id="kycFile" accept="image/*"></div><button type="submit" class="btn-primary">Submit KYC</button></form></div>`;
+    document.getElementById('kycForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('type', document.getElementById('kycType').value);
+      formData.append('number', document.getElementById('kycNumber').value);
+      const file = document.getElementById('kycFile').files[0];
+      if (file) formData.append('document', file);
+      try { await apiCall('/api/kyc/submit', { method: 'POST', body: formData }); showToast('KYC submitted for review'); } catch(e) { showToast(e.message, 'error'); }
+    });
+  }
+
+  async function renderSettings() {
+    const container = document.getElementById('pageContainer');
+    container.innerHTML = `<div class="section-card"><h3>⚙️ Profile settings</h3><form id="settingsForm"><div class="form-group"><label>Display name</label><input id="settingsName" value="${userInfo.name}" required></div><div class="form-group"><label>Phone number</label><input id="settingsPhone" placeholder="+234..."></div><button type="submit" class="btn-primary">Update profile</button></form></div>`;
+    document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try { await apiCall('/api/user/profile', { method: 'PUT', body: JSON.stringify({ name: document.getElementById('settingsName').value, phone: document.getElementById('settingsPhone').value }) }); showToast('Profile updated'); location.reload(); } catch(err) { showToast(err.message, 'error'); }
+    });
+  }
+
+  function openImagePreview(url) {
+    const modal = document.createElement('div'); modal.className = 'modal-overlay show'; modal.style.display = 'flex';
+    modal.innerHTML = `<div class="modal" style="background:transparent; box-shadow:none; text-align:center;"><img src="${url}" style="max-width:85vw; max-height:80vh; border-radius:24px;"><button style="position:absolute; top:20px; right:30px; background:white; border:none; font-size:28px; width:42px; border-radius:50px; cursor:pointer;">&times;</button></div>`;
+    document.body.appendChild(modal); modal.onclick = (e) => { if(e.target === modal || e.target.tagName === 'BUTTON') modal.remove(); };
+  }
+  window.openImagePreview = openImagePreview;
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+
+  // navigation
+  async function switchPage(page) {
+    document.querySelectorAll('.nav-link').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
+    const titles = { overview:'Dashboard', orders:'My Orders', transactions:'Transactions', sell:'Sell Product', 'my-products':'My Listings', kyc:'KYC Verification', settings:'Settings' };
+    document.getElementById('pageTitle').innerText = titles[page];
+    document.getElementById('breadcrumb').innerText = page;
+    document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').style.display = 'none';
+    if (page === 'overview') await renderOverview();
+    else if (page === 'orders') await renderOrders();
+    else if (page === 'transactions') await renderTransactions();
+    else if (page === 'sell') await renderSellPage();
+    else if (page === 'my-products') await renderMyProducts();
+    else if (page === 'kyc') await renderKYC();
+    else if (page === 'settings') await renderSettings();
+  }
+
+  // event binding
   document.querySelectorAll('.nav-link').forEach(btn => btn.addEventListener('click', () => switchPage(btn.dataset.page)));
   document.getElementById('menuBtn').addEventListener('click', () => { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').style.display = 'block'; });
   document.getElementById('sidebarOverlay').addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').style.display = 'none'; });
-  document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.removeItem('token'); window.location.href = 'login.html'; alert("Demo sign-out"); });
+  document.getElementById('logoutBtn').addEventListener('click', () => { localStorage.removeItem('token'); window.location.href = 'login.html'; });
   document.getElementById('logoutSidebarBtn').addEventListener('click', () => { localStorage.removeItem('token'); window.location.href = 'login.html'; });
-  
-  persistStore();
+  document.getElementById('editAnnouncementBtn').onclick = () => { document.getElementById('newAnnouncementText').value = currentAnnouncement; document.getElementById('announcementModal').classList.add('show'); };
+  document.getElementById('saveAnnouncementBtn').onclick = async () => { const txt = document.getElementById('newAnnouncementText').value.trim(); if(txt) await updateAnnouncement(txt); closeAnnouncementModal(); };
+  function closeAnnouncementModal() { document.getElementById('announcementModal').classList.remove('show'); }
+
+  loadAnnouncement();
   switchPage('overview');
 </script>
 </body>
