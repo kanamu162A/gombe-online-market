@@ -1,11 +1,12 @@
 
   // ---------- Auto-detect API base URL ----------
-  const BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:4040' : 'https://gombe-online-market.onrender.com';
+// ---------- Auto-detect API base URL ----------
+const API_BASE_URL =
+  window.location.hostname === 'localhost'
     ? 'http://localhost:4040'
-    : 'https://your-production-api.com';  // change to your live domain
+    : 'https://gombe-online-market.onrender.com';
 
-  const AUTH_API = `${API_BASE_URL}/api/auth`;
-
+const AUTH_API = `${API_BASE_URL}/api/auth`;
   // ---------- DOM elements ----------
   const panels = {
     login: document.getElementById('loginPanel'),
