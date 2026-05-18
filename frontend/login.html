@@ -3,10 +3,379 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-  <title>Gombe Online Market · Sign In</title>
+  <title>Gombe Online Market · Secure Access</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/style/login.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #eef2f9 0%, #e0e8f2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .login-app {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .brand-hero {
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeSlide 0.5s ease-out;
+    }
+
+    .brand-icon {
+      background: #2c7a4d;
+      width: 70px;
+      height: 70px;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      box-shadow: 0 12px 20px -8px rgba(44, 122, 77, 0.3);
+    }
+
+    .brand-icon i {
+      font-size: 2.5rem;
+      color: white;
+    }
+
+    .brand-name {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, #1f3b2c, #2c7a4d);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .brand-name span {
+      font-weight: 500;
+      color: #2c7a4d;
+      background: none;
+    }
+
+    .tagline {
+      color: #4a5b6e;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+
+    .form-card {
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(2px);
+      border-radius: 2.5rem;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .form-panel {
+      display: none;
+      animation: fade 0.25s ease;
+    }
+
+    .form-panel.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-15px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .panel-header {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .panel-header i {
+      font-size: 2.5rem;
+      background: #eef3ec;
+      padding: 12px;
+      border-radius: 60px;
+      color: #2c7a4d;
+      margin-bottom: 0.5rem;
+    }
+
+    .panel-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1e2a36;
+    }
+
+    .panel-header p {
+      color: #5e6f8d;
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+
+    .input-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .input-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+      color: #2c3e44;
+    }
+
+    .input-group label i {
+      font-size: 0.9rem;
+      color: #2c7a4d;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1.2rem;
+      font-size: 1rem;
+      transition: 0.2s;
+      background: #fff;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: #2c7a4d;
+      box-shadow: 0 0 0 3px rgba(44,122,77,0.2);
+    }
+
+    .pass-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .pass-wrapper input {
+      padding-right: 45px;
+    }
+
+    .toggle-pass {
+      position: absolute;
+      right: 16px;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+
+    .toggle-pass:hover {
+      color: #2c7a4d;
+    }
+
+    .forgot-link {
+      text-align: right;
+      margin: -0.5rem 0 1.2rem 0;
+    }
+
+    .forgot-link a, .signup-redirect a, .resend-link {
+      color: #2c7a4d;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .btn-primary, .btn-outline {
+      width: 100%;
+      padding: 14px;
+      border-radius: 2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: #2c7a4d;
+      color: white;
+      box-shadow: 0 5px 12px rgba(44,122,77,0.3);
+    }
+
+    .btn-primary:hover {
+      background: #1f5e3b;
+      transform: scale(0.98);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid #cbd5e1;
+      color: #2c3e44;
+      margin-top: 12px;
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+      border-color: #2c7a4d;
+    }
+
+    .signup-redirect {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #4b5565;
+    }
+
+    .toast-msg {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 10px;
+      border-radius: 1.5rem;
+      background: #f8fafc;
+    }
+
+    .error-msg {
+      color: #c2410c;
+      background: #fff4ed;
+    }
+
+    .success-msg {
+      color: #15803d;
+      background: #e8f5e9;
+    }
+
+    /* OTP boxes */
+    .otp-boxes {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 1.5rem 0 1rem;
+      flex-wrap: wrap;
+    }
+
+    .otp-boxes input {
+      width: 52px;
+      height: 58px;
+      text-align: center;
+      font-size: 1.7rem;
+      font-weight: 700;
+      border: 2px solid #e2e8f0;
+      border-radius: 1rem;
+      background: white;
+    }
+
+    .otp-boxes input:focus {
+      border-color: #2c7a4d;
+      outline: none;
+    }
+
+    .otp-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0 20px;
+    }
+
+    .resend-link {
+      background: none;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .timer {
+      font-family: monospace;
+      background: #eef2ff;
+      padding: 5px 12px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* password strength */
+    .password-strength {
+      margin: 8px 0 12px;
+    }
+    .strength-bar {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .strength-fill {
+      width: 0%;
+      height: 100%;
+      background: #dc2626;
+      transition: width 0.2s, background 0.2s;
+    }
+    .strength-text {
+      font-size: 0.7rem;
+      margin-top: 5px;
+      font-weight: 500;
+    }
+    .requirements {
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 1rem;
+      margin: 12px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .req {
+      font-size: 0.7rem;
+      background: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #475569;
+    }
+    .req.valid {
+      background: #e0f2e9;
+      color: #166534;
+    }
+    .req.valid span {
+      filter: brightness(0.9);
+    }
+
+    @media (max-width: 480px) {
+      .form-card {
+        padding: 1.5rem;
+      }
+      .otp-boxes input {
+        width: 45px;
+        height: 52px;
+        font-size: 1.4rem;
+      }
+      .brand-name {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 <div class="login-app">
@@ -36,8 +405,11 @@
       </div>
       <div class="forgot-link"><a href="#" id="forgotPasswordBtn">Forgot password?</a></div>
       <button class="btn-primary" id="loginBtn">Sign in <i class="fas fa-arrow-right"></i></button>
-      <div class="signup-redirect">Don't have an account? <a href="register.html">Create account</a></div>
+      <div class="signup-redirect">Don't have an account? <a href="#" id="demoRegisterHint">Create account</a></div>
       <div id="loginMessage" class="toast-msg"></div>
+      <div class="demo-hint" style="margin-top: 16px; background: #eef2ff; padding: 8px 12px; border-radius: 28px; font-size: 12px; text-align: center;">
+        <i class="fas fa-flask"></i> Demo: <strong>user@market.com</strong> / <strong>Pass@123</strong>
+      </div>
     </div>
 
     <!-- FORGOT PASSWORD – EMAIL -->
@@ -49,7 +421,7 @@
       </div>
       <div class="input-group">
         <label><i class="fas fa-envelope"></i> Email address</label>
-        <input type="email" id="resetEmail" placeholder="you@example.com">
+        <input type="email" id="resetEmail" placeholder="your@email.com">
       </div>
       <button class="btn-primary" id="sendResetOtpBtn">Send reset code</button>
       <button class="btn-outline" id="backToLoginFromForgotBtn">← Back to sign in</button>
@@ -118,314 +490,336 @@
     </div>
   </div>
 </div>
+
 <script>
-  
-  // ---------- Auto-detect API base URL ----------
-  const BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:4040' : 'https://gombe-online-market.onrender.com';
-    ? 'http://localhost:4040'
-    : 'https://your-production-api.com';  // change to your live domain
+  // -------------------- LOCAL STORAGE MOCK DATABASE --------------------
+  function initUserDB() {
+    let users = localStorage.getItem("gombe_users");
+    if (!users) {
+      const defaultUser = {
+        email: "user@market.com",
+        password: "Pass@123"    // strong demo password
+      };
+      localStorage.setItem("gombe_users", JSON.stringify([defaultUser]));
+    }
+  }
+  initUserDB();
 
-  const AUTH_API = `${API_BASE_URL}/api/auth`;
+  // Helper: find user by email (case-insensitive)
+  function findUser(email) {
+    const users = JSON.parse(localStorage.getItem("gombe_users")) || [];
+    const index = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+    return { users, index, user: index !== -1 ? users[index] : null };
+  }
 
-  // ---------- DOM elements ----------
-  const panels = {
-    login: document.getElementById('loginPanel'),
-    forgot: document.getElementById('forgotPanel'),
-    resetOtp: document.getElementById('resetOtpPanel'),
-    newPassword: document.getElementById('newPasswordPanel')
-  };
-  const loginEmail = document.getElementById('loginEmail');
-  const loginPassword = document.getElementById('loginPassword');
-  const loginBtn = document.getElementById('loginBtn');
-  const loginMessage = document.getElementById('loginMessage');
-  const resetEmail = document.getElementById('resetEmail');
-  const sendResetOtpBtn = document.getElementById('sendResetOtpBtn');
-  const resetMessage = document.getElementById('resetMessage');
-  const resetOtpDigits = document.querySelectorAll('.reset-otp-digit');
-  const verifyResetOtpBtn = document.getElementById('verifyResetOtpBtn');
-  const resendResetOtpBtn = document.getElementById('resendResetOtpBtn');
-  const resetOtpMessage = document.getElementById('resetOtpMessage');
-  const resetTimerSpan = document.getElementById('resetTimer');
-  const newPassInput = document.getElementById('newPass');
-  const confirmPassInput = document.getElementById('confirmPass');
-  const resetPasswordBtn = document.getElementById('resetPasswordBtn');
-  const newPassMessage = document.getElementById('newPassMessage');
-  const strengthFill = document.getElementById('strengthFill');
-  const strengthText = document.getElementById('strengthText');
-  const reqElements = {
-    len: document.getElementById('lenReq'),
-    upper: document.getElementById('upperReq'),
-    lower: document.getElementById('lowerReq'),
-    num: document.getElementById('numReq'),
-    spec: document.getElementById('specReq')
-  };
+  function updatePassword(email, newPassword) {
+    const { users, index } = findUser(email);
+    if (index === -1) return false;
+    users[index].password = newPassword;
+    localStorage.setItem("gombe_users", JSON.stringify(users));
+    return true;
+  }
 
-  let resetUserId = null;
-  let resetTimerInterval = null;
+  // -------------------- UI State & Helpers --------------------
+  function showPanel(panelId) {
+    document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(panelId).classList.add('active');
+  }
 
-  // ---------- Helper functions ----------
-  function showMessage(el, text, isSuccess = false) {
+  function showMessage(elementId, text, isError = true) {
+    const el = document.getElementById(elementId);
     if (!el) return;
-    el.textContent = text;
-    el.className = `toast-msg ${isSuccess ? 'success' : 'error'}`;
-    setTimeout(() => { if (el) el.style.display = 'none'; }, 4000);
+    el.innerText = text;
+    el.className = `toast-msg ${isError ? 'error-msg' : 'success-msg'}`;
+    setTimeout(() => {
+      if (el.innerText === text) el.innerText = '';
+    }, 4500);
   }
 
-  function clearMessage(el) { if (el) el.className = 'toast-msg'; }
+  // OTP logic (mock)
+  let resetContext = {
+    email: null,
+    otpCode: null,
+    timerInterval: null
+  };
 
-  function setButtonLoading(btn, isLoading, originalText) {
-    if (!btn) return;
-    if (isLoading) {
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    } else {
-      btn.disabled = false;
-      btn.innerHTML = originalText;
+  function generateOtp() { return Math.floor(100000 + Math.random() * 900000).toString(); }
+
+  function stopTimer() {
+    if (resetContext.timerInterval) {
+      clearInterval(resetContext.timerInterval);
+      resetContext.timerInterval = null;
     }
   }
 
-  function switchPanel(panelId) {
-    Object.values(panels).forEach(p => p.classList.remove('active'));
-    panels[panelId].classList.add('active');
-  }
-
-  async function postJSON(url, body) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 15000);
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        signal: controller.signal
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || `Request failed (${res.status})`);
-      return data;
-    } finally {
-      clearTimeout(timer);
-    }
-  }
-
-  // OTP input handling
-  function setupOtpInputs() {
-    resetOtpDigits.forEach((input, idx) => {
-      input.addEventListener('input', (e) => {
-        let val = e.target.value.replace(/\D/g, '');
-        if (val.length > 1) val = val.slice(0, 1);
-        e.target.value = val;
-        if (val && idx < resetOtpDigits.length - 1) resetOtpDigits[idx + 1].focus();
-      });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !input.value && idx > 0) resetOtpDigits[idx - 1].focus();
-      });
-    });
-  }
-
-  function startResetTimer(seconds) {
-    clearInterval(resetTimerInterval);
-    let sec = seconds;
-    const tick = () => {
-      resetTimerSpan.textContent = `⏱️ ${String(sec).padStart(2, '0')}:00`;
-      if (sec-- <= 0) {
-        clearInterval(resetTimerInterval);
-        resetTimerSpan.textContent = '';
+  function startTimer(seconds = 60) {
+    stopTimer();
+    let remaining = seconds;
+    const timerSpan = document.getElementById("resetTimer");
+    if (!timerSpan) return;
+    const update = () => {
+      const mins = Math.floor(remaining / 60);
+      const secs = remaining % 60;
+      timerSpan.innerHTML = `⏱️ ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+      if (remaining <= 0) {
+        stopTimer();
+        timerSpan.innerHTML = "⏱️ 00:00";
+        const resendBtn = document.getElementById("resendResetOtpBtn");
+        if (resendBtn) resendBtn.disabled = false;
+      } else {
+        remaining--;
       }
     };
-    tick();
-    resetTimerInterval = setInterval(tick, 1000);
+    update();
+    resetContext.timerInterval = setInterval(update, 1000);
   }
 
-  function stopResetTimer() {
-    clearInterval(resetTimerInterval);
-    resetTimerSpan.textContent = '';
+  function sendResetCode(email) {
+    const { user } = findUser(email);
+    if (!user) {
+      showMessage("resetMessage", "❌ No account found with this email.", true);
+      return false;
+    }
+    const newOtp = generateOtp();
+    resetContext.email = email;
+    resetContext.otpCode = newOtp;
+    // In real app, send email; here we show OTP in toast for demo
+    showMessage("resetMessage", `✅ Reset code sent! (Demo OTP: ${newOtp})`, false);
+    return true;
   }
 
-  function updatePasswordStrength() {
-    const val = newPassInput.value;
-    const checks = {
-      len: val.length >= 8,
-      upper: /[A-Z]/.test(val),
-      lower: /[a-z]/.test(val),
-      num: /[0-9]/.test(val),
-      spec: /[@$!%*?&]/.test(val)
-    };
-    const score = Object.values(checks).filter(Boolean).length;
-    const colors = ['#ef4444', '#f97316', '#f59e0b', '#84cc16', '#10b981'];
-    const labels = ['Very weak', 'Weak', 'Fair', 'Good', 'Strong'];
-    strengthFill.style.width = `${score * 20}%`;
-    strengthFill.style.background = colors[score] || colors[0];
-    strengthText.textContent = labels[score] || 'Very weak';
-    if (reqElements.len) {
-      reqElements.len.classList.toggle('valid', checks.len);
-      reqElements.len.querySelector('span').textContent = checks.len ? '✅' : '🔘';
-      reqElements.upper.classList.toggle('valid', checks.upper);
-      reqElements.upper.querySelector('span').textContent = checks.upper ? '✅' : '🔘';
-      reqElements.lower.classList.toggle('valid', checks.lower);
-      reqElements.lower.querySelector('span').textContent = checks.lower ? '✅' : '🔘';
-      reqElements.num.classList.toggle('valid', checks.num);
-      reqElements.num.querySelector('span').textContent = checks.num ? '✅' : '🔘';
-      reqElements.spec.classList.toggle('valid', checks.spec);
-      reqElements.spec.querySelector('span').textContent = checks.spec ? '✅' : '🔘';
+  // OTP boxes auto navigation
+  function setupOtpBoxes() {
+    const boxes = document.querySelectorAll(".reset-otp-digit");
+    boxes.forEach((box, idx) => {
+      box.removeEventListener("input", otpInputHandler);
+      box.removeEventListener("keydown", otpKeydown);
+      box.addEventListener("input", otpInputHandler);
+      box.addEventListener("keydown", otpKeydown);
+    });
+    function otpInputHandler(e) {
+      let val = e.target.value.replace(/\D/g, '');
+      if (val.length > 1) val = val[0];
+      e.target.value = val;
+      if (val && idx < boxes.length - 1) boxes[idx + 1].focus();
+    }
+    function otpKeydown(e) {
+      if (e.key === "Backspace" && !e.target.value && idx > 0) {
+        boxes[idx - 1].focus();
+      }
     }
   }
 
-  // ---------- Login handler ----------
+  function getOtpFromBoxes() {
+    let code = "";
+    document.querySelectorAll(".reset-otp-digit").forEach(inp => code += inp.value);
+    return code;
+  }
+
+  function clearOtpBoxes() {
+    document.querySelectorAll(".reset-otp-digit").forEach(inp => inp.value = "");
+  }
+
+  // Password strength meter
+  function validateAndUpdateStrength(pwd) {
+    const len = pwd.length >= 8;
+    const upper = /[A-Z]/.test(pwd);
+    const lower = /[a-z]/.test(pwd);
+    const num = /[0-9]/.test(pwd);
+    const special = /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
+    const score = [len, upper, lower, num, special].filter(Boolean).length;
+    const fill = document.getElementById("strengthFill");
+    const strengthTextEl = document.getElementById("strengthText");
+    let width = (score / 5) * 100;
+    fill.style.width = width + "%";
+    if (width <= 30) fill.style.background = "#dc2626";
+    else if (width <= 70) fill.style.background = "#f59e0b";
+    else fill.style.background = "#10b981";
+    if (!pwd) strengthTextEl.innerText = "Enter a password";
+    else if (score === 5) strengthTextEl.innerText = "Strong password";
+    else if (score >= 3) strengthTextEl.innerText = "Medium strength";
+    else strengthTextEl.innerText = "Weak password";
+
+    document.getElementById("lenReq").classList.toggle("valid", len);
+    document.getElementById("upperReq").classList.toggle("valid", upper);
+    document.getElementById("lowerReq").classList.toggle("valid", lower);
+    document.getElementById("numReq").classList.toggle("valid", num);
+    document.getElementById("specReq").classList.toggle("valid", special);
+    return { len, upper, lower, num, special, score };
+  }
+
+  // -------------------- EVENT HANDLERS --------------------
+  // 1. LOGIN
   async function handleLogin() {
-    const email = loginEmail.value.trim();
-    const password = loginPassword.value;
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
     if (!email || !password) {
-      showMessage(loginMessage, 'Please fill in both fields.', false);
+      showMessage("loginMessage", "Please enter email and password.", true);
       return;
     }
-    const originalText = loginBtn.innerHTML;
-    setButtonLoading(loginBtn, true, originalText);
-    try {
-      const data = await postJSON(`${AUTH_API}/login`, { email, password });
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      window.location.href = 'dashboard.html';
-    } catch (err) {
-      showMessage(loginMessage, err.message, false);
-      setButtonLoading(loginBtn, false, originalText);
+    const { user } = findUser(email);
+    if (user && user.password === password) {
+      showMessage("loginMessage", `✅ Welcome back, ${email}! Redirecting...`, false);
+      setTimeout(() => {
+        alert("🔐 Login successful! (demo dashboard would open)");
+        // In a real app, redirect to dashboard; here just reset form
+        document.getElementById("loginPassword").value = "";
+      }, 800);
+    } else {
+      showMessage("loginMessage", "Invalid email or password. Try user@market.com / Pass@123", true);
     }
   }
 
-  // ---------- Forgot password: send OTP ----------
-  async function handleSendResetOtp() {
-    const email = resetEmail.value.trim();
+  // 2. FORGOT: send OTP
+  function handleSendOtp() {
+    const email = document.getElementById("resetEmail").value.trim();
     if (!email) {
-      showMessage(resetMessage, 'Enter your email address.', false);
+      showMessage("resetMessage", "Please enter your email address.", true);
       return;
     }
-    const originalText = sendResetOtpBtn.innerHTML;
-    setButtonLoading(sendResetOtpBtn, true, originalText);
-    try {
-      const data = await postJSON(`${AUTH_API}/forgot-password`, { email });
-      resetUserId = data.userId;
-      showMessage(resetMessage, 'Reset code sent!', true);
-      switchPanel('resetOtp');
-      startResetTimer(60);
-    } catch (err) {
-      showMessage(resetMessage, err.message, false);
-    } finally {
-      setButtonLoading(sendResetOtpBtn, false, originalText);
+    if (sendResetCode(email)) {
+      // Move to OTP panel
+      showPanel("resetOtpPanel");
+      clearOtpBoxes();
+      setupOtpBoxes();
+      startTimer(60);
+      const resendBtn = document.getElementById("resendResetOtpBtn");
+      if (resendBtn) resendBtn.disabled = false;
+      document.getElementById("resetOtpMessage").innerHTML = "";
+      setTimeout(() => document.querySelector(".reset-otp-digit")?.focus(), 100);
     }
   }
 
-  async function handleResendResetOtp() {
-    const email = resetEmail.value.trim();
-    if (!email) {
-      showMessage(resetOtpMessage, 'Email is missing.', false);
+  // Resend OTP
+  function handleResendOtp() {
+    if (!resetContext.email) {
+      showMessage("resetOtpMessage", "Session expired, please go back.", true);
+      showPanel("forgotPanel");
       return;
     }
-    const originalText = resendResetOtpBtn.innerHTML;
-    setButtonLoading(resendResetOtpBtn, true, originalText);
-    try {
-      await postJSON(`${AUTH_API}/forgot-password`, { email });
-      showMessage(resetOtpMessage, 'New code sent', true);
-      startResetTimer(60);
-    } catch (err) {
-      showMessage(resetOtpMessage, err.message, false);
-    } finally {
-      setButtonLoading(resendResetOtpBtn, false, originalText);
+    const newOtp = generateOtp();
+    resetContext.otpCode = newOtp;
+    showMessage("resetOtpMessage", `🔄 New OTP sent! (Demo: ${newOtp})`, false);
+    startTimer(60);
+    clearOtpBoxes();
+    const resendBtn = document.getElementById("resendResetOtpBtn");
+    if (resendBtn) resendBtn.disabled = false;
+  }
+
+  // Verify OTP
+  function handleVerifyOtp() {
+    const entered = getOtpFromBoxes();
+    if (entered.length !== 6) {
+      showMessage("resetOtpMessage", "Enter full 6-digit code.", true);
+      return;
+    }
+    if (!resetContext.otpCode) {
+      showMessage("resetOtpMessage", "No active OTP. Request a new code.", true);
+      return;
+    }
+    if (entered === resetContext.otpCode) {
+      showMessage("resetOtpMessage", "✅ Code verified! Set a new password.", false);
+      stopTimer();
+      showPanel("newPasswordPanel");
+      // reset password fields
+      document.getElementById("newPass").value = "";
+      document.getElementById("confirmPass").value = "";
+      validateAndUpdateStrength("");
+    } else {
+      showMessage("resetOtpMessage", "❌ Invalid code. Please try again.", true);
     }
   }
 
-  function handleVerifyResetOtp() {
-    const otp = Array.from(resetOtpDigits).map(d => d.value).join('');
-    if (otp.length !== 6) {
-      showMessage(resetOtpMessage, 'Enter the 6‑digit code.', false);
-      return;
-    }
-    window.tempResetOtp = otp;
-    clearMessage(resetOtpMessage);
-    stopResetTimer();
-    switchPanel('newPassword');
-    resetOtpDigits.forEach(d => d.value = '');
-  }
-
-  // ---------- Reset password ----------
-  async function handleResetPassword() {
-    const newPass = newPassInput.value;
-    const confirm = confirmPassInput.value;
+  // Reset password final step
+  function handleResetPassword() {
+    const newPass = document.getElementById("newPass").value;
+    const confirm = document.getElementById("confirmPass").value;
     if (!newPass || !confirm) {
-      showMessage(newPassMessage, 'Fill both password fields.', false);
+      showMessage("newPassMessage", "Please fill both password fields.", true);
       return;
     }
     if (newPass !== confirm) {
-      showMessage(newPassMessage, 'Passwords do not match.', false);
+      showMessage("newPassMessage", "Passwords do not match.", true);
       return;
     }
-    if (newPass.length < 8 || !/[A-Z]/.test(newPass) || !/[a-z]/.test(newPass) || !/[0-9]/.test(newPass)) {
-      showMessage(newPassMessage, 'Password must be at least 8 characters with uppercase, lowercase and a number.', false);
+    const strength = validateAndUpdateStrength(newPass);
+    if (!(strength.len && strength.upper && strength.lower && strength.num && strength.special)) {
+      showMessage("newPassMessage", "Password must meet all requirements (8+ chars, uppercase, lowercase, number, special).", true);
       return;
     }
-    const otp = window.tempResetOtp;
-    if (!otp || !resetUserId) {
-      showMessage(newPassMessage, 'Session expired. Please restart.', false);
+    if (!resetContext.email || !resetContext.otpCode) {
+      showMessage("newPassMessage", "Session invalid. Please restart reset process.", true);
+      showPanel("forgotPanel");
       return;
     }
-    const originalText = resetPasswordBtn.innerHTML;
-    setButtonLoading(resetPasswordBtn, true, originalText);
-    try {
-      await postJSON(`${AUTH_API}/reset-password`, {
-        userId: resetUserId,
-        otp,
-        newPassword: newPass
-      });
-      showMessage(newPassMessage, 'Password reset successful!', true);
+    const success = updatePassword(resetContext.email, newPass);
+    if (success) {
+      showMessage("newPassMessage", "🎉 Password reset successful! Please sign in.", false);
+      // Clean up
+      resetContext.email = null;
+      resetContext.otpCode = null;
+      stopTimer();
       setTimeout(() => {
-        newPassInput.value = '';
-        confirmPassInput.value = '';
-        switchPanel('login');
-        window.tempResetOtp = null;
-        resetUserId = null;
+        showPanel("loginPanel");
+        document.getElementById("loginMessage").innerHTML = "";
       }, 1500);
-    } catch (err) {
-      showMessage(newPassMessage, err.message, false);
-    } finally {
-      setButtonLoading(resetPasswordBtn, false, originalText);
+    } else {
+      showMessage("newPassMessage", "Something went wrong. Try again.", true);
     }
   }
 
-  // ---------- Password visibility toggles ----------
-  document.querySelectorAll('.toggle-pass').forEach(icon => {
-    icon.addEventListener('click', () => {
-      const targetId = icon.getAttribute('data-target');
-      const input = document.getElementById(targetId);
-      if (input) {
-        const show = input.type === 'password';
-        input.type = show ? 'text' : 'password';
-        icon.classList.toggle('fa-eye-slash', !show);
-        icon.classList.toggle('fa-eye', show);
-      }
+  // -------------------- ATTACH EVENT LISTENERS & TOGGLE PASSWORD --------------------
+  document.addEventListener("DOMContentLoaded", () => {
+    // Password visibility toggles
+    document.querySelectorAll(".toggle-pass").forEach(icon => {
+      icon.addEventListener("click", function() {
+        const targetId = this.getAttribute("data-target");
+        const input = document.getElementById(targetId);
+        if (input) {
+          const type = input.type === "password" ? "text" : "password";
+          input.type = type;
+          this.classList.toggle("fa-eye-slash");
+          this.classList.toggle("fa-eye");
+        }
+      });
+    });
+
+    // Buttons
+    document.getElementById("loginBtn").addEventListener("click", handleLogin);
+    document.getElementById("forgotPasswordBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      showPanel("forgotPanel");
+      document.getElementById("resetMessage").innerHTML = "";
+    });
+    document.getElementById("sendResetOtpBtn").addEventListener("click", handleSendOtp);
+    document.getElementById("resendResetOtpBtn").addEventListener("click", handleResendOtp);
+    document.getElementById("verifyResetOtpBtn").addEventListener("click", handleVerifyOtp);
+    document.getElementById("resetPasswordBtn").addEventListener("click", handleResetPassword);
+
+    // Back navigation
+    document.getElementById("backToLoginFromForgotBtn").addEventListener("click", () => showPanel("loginPanel"));
+    document.getElementById("backToForgotFromResetBtn").addEventListener("click", () => {
+      stopTimer();
+      showPanel("forgotPanel");
+      clearOtpBoxes();
+    });
+    document.getElementById("backToLoginFromNewBtn").addEventListener("click", () => {
+      showPanel("loginPanel");
+      resetContext.email = null;
+      resetContext.otpCode = null;
+      stopTimer();
+    });
+
+    // Live password strength
+    const newPassField = document.getElementById("newPass");
+    newPassField.addEventListener("input", (e) => validateAndUpdateStrength(e.target.value));
+    
+    // Demo register hint
+    document.getElementById("demoRegisterHint").addEventListener("click", (e) => {
+      e.preventDefault();
+      alert("📝 Demo mode:\nUse existing account: user@market.com / Pass@123\nYou can also create new accounts via console (localStorage).");
     });
   });
-
-  // ---------- Event listeners ----------
-  loginBtn.addEventListener('click', handleLogin);
-  sendResetOtpBtn.addEventListener('click', handleSendResetOtp);
-  resendResetOtpBtn.addEventListener('click', handleResendResetOtp);
-  verifyResetOtpBtn.addEventListener('click', handleVerifyResetOtp);
-  resetPasswordBtn.addEventListener('click', handleResetPassword);
-  document.getElementById('forgotPasswordBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    clearMessage(resetMessage);
-    switchPanel('forgot');
-  });
-  document.getElementById('backToLoginFromForgotBtn').addEventListener('click', () => switchPanel('login'));
-  document.getElementById('backToForgotFromResetBtn').addEventListener('click', () => {
-    stopResetTimer();
-    clearMessage(resetOtpMessage);
-    switchPanel('forgot');
-  });
-  document.getElementById('backToLoginFromNewBtn').addEventListener('click', () => switchPanel('login'));
-
-  newPassInput.addEventListener('input', updatePasswordStrength);
-
-  // ---------- Initialization ----------
-  setupOtpInputs();
 </script>
 </body>
 </html>
